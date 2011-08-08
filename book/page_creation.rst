@@ -413,12 +413,11 @@ Symfony :term:`приложение` имеет одну и ту же базов
 
 * ``web/``: This is the web root directory and contains any publicly accessible files;
 
-The Web Directory
+Директория Web
 ~~~~~~~~~~~~~~~~~
 
-The web root directory is the home of all public and static files including
-images, stylesheets, and JavaScript files. It is also where each
-:term:`front controller` lives::
+Web-директория – это дом для всех публично-доступных статических файлов, таких как изображения, таблицы стилей и JavaScript файлы. Тут также располагаются все
+:term:`фронт-контроллеры`::
 
     // web/app.php
     require_once __DIR__.'/../app/bootstrap.php.cache';
@@ -430,71 +429,71 @@ images, stylesheets, and JavaScript files. It is also where each
     $kernel->loadClassCache();
     $kernel->handle(Request::createFromGlobals())->send();
 
-The front controller file (``app.php`` in this example) is the actual PHP
-file that's executed when using a Symfony2 application and its job is to
-use a Kernel class, ``AppKernel``, to bootstrap the application.
+Файл фронт-контроллера (в примере выше – ``app.php``) - это PHP файл, который
+выполняется, когда используется Symfony2 приложение и в его обязанности входит 
+использование Kernel-класса, ``AppKernel``, для запуска приложения.
 
 .. tip::
 
-    Having a front controller means different and more flexible URLs than
-    are used in a typical flat PHP application. When using a front controller,
-    URLs are formatted in the following way:
+    Наличие фронт-контроллера означает возможность использования более гибких
+    URL, отличных от тех, что используются в типичном “плоском” PHP -
+    приложении. Когда используется фронт-контроллер, URL формируется следующим
+    образом:
 
     .. code-block:: text
 
         http://localhost/app.php/hello/Ryan
 
-    The front controller, ``app.php``, is executed and the "internal:" URL
-    ``/hello/Ryan`` is routed internally using the routing configuration.
-    By using Apache ``mod_rewrite`` rules, you can force the ``app.php`` file
-    to be executed without needing to specify it in the URL:
+    Фронт-контроллер ``app.php`` выполняется и URL ``/hello/Ryan``
+    направляется внутри приложения с использованием конфигурации
+    маршрутизатора. С использованием правил ``mod_rewrite`` для Apache вы
+    можете перенаправлять все запросы (на физически не существующие URL) на
+    ``app.php``, чтобы явно не указывать его в URL:
 
     .. code-block:: text
 
         http://localhost/hello/Ryan
 
-Though front controllers are essential in handling every request, you'll
-rarely need to modify or even think about them. We'll mention them again
-briefly in the `Environments`_ section.
+Хотя фронт-контроллеры имеют важное значение при обработке каждого запроса,вам нечасто придется модифицировать их или вообще вспоминать об их существовании. Мы еще вкратце упомянем о них в разделе, где говорится об `Окружения`_.
 
-The Application (``app``) Directory
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Директория приложения (``app``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-As you saw in the front controller, the ``AppKernel`` class is the main entry
-point of the application and is responsible for all configuration. As such,
-it is stored in the ``app/`` directory.
+Как вы уже видели во фронт-контроллере, класс ``AppKernel`` – это точка входа 
+приложения и он отвечает за его конфигурацию. Как таковой, этот класс 
+расположен в директории ``app/``.
 
-This class must implement two methods that define everything that Symfony
-needs to know about your application. You don't even need to worry about
-these methods when starting - Symfony fills them in for you with sensible
-defaults.
+Этот класс должен реализовывать три метода, которые определяются все, что 
+Symfony необходимо знать о вашем приложении. Вам даже не нужно беспокоиться о 
+реализации этих методов, когда начинаете работу – они уже реализованы с кодом 
+по-умолчанию.
 
-* ``registerBundles()``: Returns an array of all bundles needed to run the
-  application (see :ref:`page-creation-bundles`);
+* ``registerBundles()``: Возвращает массив всех пакетов, необходимых для запуска приложения (см. секцию :ref:`page-creation-bundles`);
 
-* ``registerContainerConfiguration()``: Loads the main application configuration
-  resource file (see the `Application Configuration`_ section).
+* ``registerContainerConfiguration()``: Загружает главный конфигурационный файл (см. секцию `Настройка приложения`_).
 
-In day-to-day development, you'll mostly use the ``app/`` directory to modify
-configuration and routing files in the ``app/config/`` directory (see
-`Application Configuration`_). It also contains the application cache
-directory (``app/cache``), a log directory (``app/logs``) and a directory
-for application-level resource files, such as templates (``app/Resources``).
-You'll learn more about each of these directories in later chapters.
+Изо дня в день вы будете использовать директорию ``app/`` в основном для того, 
+чтобы модифицировать конфигурацию и настройки маршрутизатора в директории 
+``app/config/`` directory (см.
+`Настройка приложения`_). Также в ``app/`` содержится кеш (``app/cache``), 
+директория для логов (``app/logs``) и директория для ресурсов уровня 
+приложения (``app/Resources``).
+Об этих директориях подробнее будет рассказано в других главах.
 
 .. _autoloading-introduction-sidebar:
 
-.. sidebar:: Autoloading
+.. sidebar:: Автозагрузка
 
-    When Symfony is loading, a special file - ``app/autoload.php`` - is included.
-    This file is responsible for configuring the autoloader, which will autoload
-    your application files from the ``src/`` directory and third-party libraries
-    from the ``vendor/`` directory.
+    При инициализации приложения подключается особый файл -
+    ``app/autoload.php``.
+    Этот файл отвечает за автозагрузку всех файлов из директорий ``src/``
+    и ``vendor/``.
 
-    Because of the autoloader, you never need to worry about using ``include``
-    or ``require`` statements. Instead, Symfony2 uses the namespace of a class
-    to determine its location and automatically includes the file on your
-    behalf the instant you need a class.
+    С использованием автозагрузки вам больше не придется беспокоиться об
+    использовании выражений ``include`` или 
+    ``require``. Вместо этого, Symfony2 использует пространства имен классов, 
+    чтобы определить их расположение и автоматически подключить файл класса, в 
+    случае если класс вам понадобится.
 
     The autoloader is already configured to look in the ``src/`` directory
     for any of your PHP classes. For autoloading to work, the class name and
@@ -512,15 +511,15 @@ You'll learn more about each of these directories in later chapters.
     directory. For more information on autoloading, see
     :doc:`How to autoload Classes</cookbook/tools/autoloader>`.
 
-The Source (``src``) Directory
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Директория исходных кодов проекта (``src``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Put simply, the ``src/`` directory contains all of the actual code (PHP code,
 templates, configuration files, stylesheets, etc) that drives *your* application.
 When developing, the vast majority of your work will be done inside one or
 more bundles that you create in this directory.
 
-But what exactly is a :term:`пакет`?
+Но что же собственно из себя представляет сам :term:`пакет`?
 
 .. _page-creation-bundles:
 
@@ -584,14 +583,14 @@ are used by your application (including the core Symfony bundles).
    A bundle can live *anywhere* as long as it can be autoloaded (via the
    autoloader configured at ``app/autoload.php``).
 
-Creating a Bundle
+Создание пакета
 ~~~~~~~~~~~~~~~~~
 
 The Symfony Standard Edition comes with a handy task that creates a fully-functional
 bundle for you. Of course, creating a bundle by hand is pretty easy as well.
 
-To show you how simple the bundle system is, create a new bundle called
-``AcmeTestBundle`` and enable it.
+Чтобы показать вам как проста система пакетов, давайте создадим новый пакет, назовём его
+``AcmeTestBundle``и активируем его.
 
 .. tip::
 
@@ -613,15 +612,15 @@ called ``AcmeTestBundle.php``::
 
 .. tip::
 
-   The name ``AcmeTestBundle`` follows the standard :ref:`Bundle naming conventions<bundles-naming-conventions>`.
+   Наименование ``AcmeTestBundle`` следует :ref:`соглашениям по именованию пакетов<bundles-naming-conventions>`.
    You could also choose to shorten the name of the bundle to simply ``TestBundle``
    by naming this class ``TestBundle`` (and naming the file ``TestBundle.php``).
 
-This empty class is the only piece you need to create the new bundle. Though
-commonly empty, this class is powerful and can be used to customize the behavior
-of the bundle.
+Этот пустой класс – единственное, что необходимо создать для минимальной 
+комплектации пакета. Не смотря на то, что класс пуст, он обладает большим 
+потенциалом и позволяет настраивать поведение пакета.
 
-Now that you've created the bundle, enable it via the ``AppKernel`` class::
+Теперь, когда мы создали пакет, его нужно активировать в классе ``AppKernel``::
 
     // app/AppKernel.php
     public function registerBundles()
@@ -637,65 +636,57 @@ Now that you've created the bundle, enable it via the ``AppKernel`` class::
         return $bundles;
     }
 
-And while it doesn't do anything yet, ``AcmeTestBundle`` is now ready to
-be used.
+И, хотя наш новый пакет пока ничего не делает, он готов к использованию.
 
-And as easy as this is, Symfony also provides a command-line interface for
-generating a basic bundle skeleton:
+Symfony также предлагает интерфейс для командной строки для создания базового 
+каркаса пакета:
 
 .. code-block:: bash
 
     php app/console generate:bundle --namespace=Acme/TestBundle
 
-The bundle skeleton generates with a basic controller, template and routing
-resource that can be customized. You'll learn more about Symfony2's command-line
-tools later.
+Каркас пакета создаёт базовый контроллер, шаблон и маршрут, которые можно 
+настроить. Мы еще вернёмся к инструментам командной строки позже.
 
 .. tip::
 
-   Whenever creating a new bundle or using a third-party bundle, always make
-   sure the bundle has been enabled in ``registerBundles()``. When using
+   Когда создаёте новый пакет, или используете сторонние пакеты, убедитесь, 
+   что пакет активирован в ``registerBundles()``. When using
    the ``generate:bundle`` command, this is done for you.
 
-Bundle Directory Structure
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Структура директории пакета
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The directory structure of a bundle is simple and flexible. By default, the
-bundle system follows a set of conventions that help to keep code consistent
-between all Symfony2 bundles. Take a look at ``AcmeHelloBundle``, as it contains
-some of the most common elements of a bundle:
+Структура директории пакета проста и гибка. По умолчанию, система пакетов следует некоторым соглашениям, которые помогают поддерживать стилевое единообразие во всех пакетах Symfony2. Давайте взглянем на пакет ``AcmeHelloBundle``, так как он содержит наиболее основные элементы пакета:
 
-* ``Controller/`` contains the controllers of the bundle (e.g. ``HelloController.php``);
+* ``Controller/`` содержит контроллеры (например ``HelloController.php``);
 
-* ``Resources/config/`` houses configuration, including routing configuration
-  (e.g. ``routing.yml``);
+* ``Resources/config/`` место для конфигурационных файлов, включая конфигурацию маршрутизатора (например ``routing.yml``);
 
-* ``Resources/views/`` holds templates organized by controller name (e.g.
+* ``Resources/views/`` шаблоны, сгруппированные по имени контроллера (например
   ``Hello/index.html.twig``);
 
-* ``Resources/public/`` contains web assets (images, stylesheets, etc) and is
-  copied or symbolically linked into the project ``web/`` directory via
-  the ``assets:install`` console command;
+* ``Resources/public/`` публично доступные ресурсы (картинки, стили…), которые будут скопированы или связаны символической ссылкой с директорией ``web/`` через команду ``assets:install``
 
-* ``Tests/`` holds all tests for the bundle.
+* ``Tests/`` содержит все тесты.
 
-A bundle can be as small or large as the feature it implements. It contains
-only the files you need and nothing else.
+Пакет может быть как маленьким, так и большим – в зависимости от задачи, 
+которую он реализует. Он содержит лишь те файлы, которые нужны – и ничего 
+более.
 
-As you move through the book, you'll learn how to persist objects to a database,
-create and validate forms, create translations for your application, write
-tests and much more. Each of these has their own place and role within the
-bundle.
+В других главах книги вы также узнаете как работать с базой данных, как 
+создавать и валидировать формы, создавать файлы переводов, писать тесты и 
+много чего ещё. Все эти объекты в пакете имеют определенную роль и место.
 
-Application Configuration
+Настройка приложения
 -------------------------
 
-An application consists of a collection of bundles representing all of the
-features and capabilities of your application. Each bundle can be customized
-via configuration files written in YAML, XML or PHP. By default, the main
-configuration file lives in the ``app/config/`` directory and is called
-either ``config.yml``, ``config.xml`` or ``config.php`` depending on which
-format you prefer:
+Приложение состоит из набора пакетов, реализующих все необходимые функции
+вашего приложения. Каждый пакет может быть настроен при помощи
+конфигурационных файлов, написанных на YAML, XML или PHP. По умолчанию, 
+основной конфигурационный файл расположен в директории ``app/config/`` и 
+называется ``config.yml``, ``config.xml`` или ``config.php``, в зависимости от 
+предпочитаемого вами формата:
 
 .. configuration-block::
 
@@ -781,59 +772,60 @@ format you prefer:
 
 .. note::
 
-   You'll learn exactly how to load each file/format in the next section
-   `Environments`_.
+   О том как выбрать какой файл/формат загружать – мы рассмотрим в следующей
+   секции `Environments`_.
 
-Each top-level entry like ``framework`` or ``twig`` defines the configuration
-for a particular bundle. For example, the ``framework`` key defines the configuration
-for the core Symfony ``FrameworkBundle`` and includes configuration for the
-routing, templating, and other core systems.
+Каждый параметр верхнего уровня, например ``framework`` или ``twig``,
+определяет настройки конкретного пакета. Например, ключ ``framework``
+определяет настройки ядра Symfony ``FrameworkBundle`` и включает настройки
+маршрутизации, шаблонизатора и прочих ключевых систем.
 
-For now, don't worry about the specific configuration options in each section.
-The configuration file ships with sensible defaults. As you read more and
-explore each part of Symfony2, you'll learn about the specific configuration
-options of each feature.
+Пока же нам не стоит беспокоиться о конкретных настройках в каждой секции.
+Файл настроек по умолчанию содержит все необходимые параметры. По ходу чтения
+прочей документации вы ознакомитесь со всеми специфическими настройками.
 
-.. sidebar:: Configuration Formats
+.. sidebar:: Форматы конфигураций
 
-    Throughout the chapters, all configuration examples will be shown in all
-    three formats (YAML, XML and PHP). Each has its own advantages and
-    disadvantages. The choice of which to use is up to you:
+    Во всех главах книги все примеры конфигураций будут показаны во всех трех
+    форматах (YAML, XML and PHP). Каждый из них имеет свои достоинства и
+    недостатки. Выбор же формата целиком зависит о ваших предпочтений:
 
-    * *YAML*: Simple, clean and readable;
+    * *YAML*: Простой, понятный и читабельный;
 
-    * *XML*: More powerful than YAML at times and supports IDE autocompletion;
+    * *XML*: В разы более мощный, нежели YAML. Поддерживается многими IDE
+      (autocompletion);
 
-    * *PHP*: Very powerful but less readable than standard configuration formats.
+    * *PHP*: Очень мощный, но менее читабельный, чем стандартные форматы
+      конфигурационных файлов.
 
 .. index::
-   single: Environments; Introduction
+   single: Окружения; Введение
 
 .. _environments-summary:
 
-Environments
+Окружения
 ------------
 
-An application can run in various environments. The different environments
-share the same PHP code (apart from the front controller), but use different
-configuration. For instance, a ``dev`` environment will log warnings and
-errors, while a ``prod`` environment will only log errors. Some files are
-rebuilt on each request in the ``dev`` environment (for the developer's convenience),
-but cached in the ``prod`` environment. All environments live together on
-the same machine and execute the same application.
+Приложение можно запускать в различных окружениях. Различные окружения
+используют один и тот же PHP код (за исключением фронт-контроллера), но могут
+иметь совершенно различные настройки. Например, ``dev`` окружение ведет лог
+ошибок и замечаний, в то время как ``prod`` окружение логгирует только ошибки.
+В ``dev`` некоторые файлы пересоздаются при каждом запросе, но кешируются в
+``prod`` окружении. В то же время, все окружения одновременно доступны на
+одной и той же машине.
 
-A Symfony2 project generally begins with three environments (``dev``, ``test``
-and ``prod``), though creating new environments is easy. You can view your
-application in different environments simply by changing the front controller
-in your browser. To see the application in the ``dev`` environment, access
-the application via the development front controller:
+Проект Symfony2 по умолчанию имеет три окружения (``dev``, ``test``
+и ``prod``), хотя создать новое окружение не сложно. Вы можете смотреть ваше
+приложение в различных окружениях просто меняя фронт-контроллеры в браузере.
+Для того чтобы отобразить приложение в ``dev`` окружении, откройте его при
+помощи фронт контроллера app_dev.php:
 
 .. code-block:: text
 
     http://localhost/app_dev.php/hello/Ryan
 
-If you'd like to see how your application will behave in the production environment,
-call the ``prod`` front controller instead:
+Если же вы хотите посмотреть, как поведёт себя приложение в продуктовой среде,
+вы можете вызвать фронт-контроллер ``prod``:
 
 .. code-block:: text
 
@@ -841,35 +833,34 @@ call the ``prod`` front controller instead:
 
 .. note::
 
-   If you open the ``web/app.php`` file, you'll find that it's configured explicitly
-   to use the ``prod`` environment::
+   Если вы откроете файл ``web/app.php``, вы обнаружите, что он однозначно
+   настроен на использование ``prod`` окружения::
 
        $kernel = new AppKernel('prod', false);
 
-   You can create a new front controller for a new environment by copying
-   this file and changing ``prod`` to some other value.
+   Вы можете создать новый фронт-контроллер для нового окружения просто
+   скопировав этот файл и изменив ``prod`` на другое значение.
 
-Since the ``prod`` environment is optimized for speed; the configuration,
-routing and Twig templates are compiled into flat PHP classes and cached.
-When viewing changes in the ``prod`` environment, you'll need to clear these
-cached files and allow them to rebuild::
+Так как ``prod`` окружение оптимизировано для скорости, настройки, маршруты и
+шаблоны Twig компилируются в плоские PHP классы и кешируются. Когда вы хотите
+посмотреть изменения в продуктовом окружении, вам потребуется удалить эти
+файлы чтобы они пересоздались автоматически::
 
     php app/console cache:clear --env=prod
 
 .. note::
 
-    The ``test`` environment is used when running automated tests and cannot
-    be accessed directly through the browser. See the :doc:`testing chapter</book/testing>`
-    for more details.
+    Тестовое окружение ``test`` используется при запуске автотестов и его
+    нельзя напрямую открыть через браузер. Подробнее об это можно почитать
+    в :doc:`главе про тестирование</book/testing>`.
 
 .. index::
-   single: Environments; Configuration
+   single: Окружения; Настройка
 
-Environment Configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Настройка окружений
+~~~~~~~~~~~~~~~~~~~~~~
 
-The ``AppKernel`` class is responsible for actually loading the configuration
-file of your choice::
+Класс ``AppKernel`` отвечает за загрузку конфигурационных файлов::
 
     // app/AppKernel.php
     public function registerContainerConfiguration(LoaderInterface $loader)
@@ -877,10 +868,10 @@ file of your choice::
         $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
     }
 
-You already know that the ``.yml`` extension can be changed to ``.xml`` or
-``.php`` if you prefer to use either XML or PHP to write your configuration.
-Notice also that each environment loads its own configuration file. Consider
-the configuration file for the ``dev`` environment.
+Мы уже знаем, что расширение ``.yml`` может быть изменено на ``.xml`` или
+``.php`` если вы предпочитаете использовать XML или PHP. Имейте также в виду,
+что каждое окружение загружает свои собственные настройки. Рассмотрим
+конфигурационный файл для ``dev`` окружения.
 
 .. configuration-block::
 
@@ -922,21 +913,23 @@ the configuration file for the ``dev`` environment.
 
         // ...
 
-The ``imports`` key is similar to a PHP ``include`` statement and guarantees
-that the main configuration file (``config.yml``) is loaded first. The rest
-of the file tweaks the default configuration for increased logging and other
-settings conducive to a development environment.
+Ключ ``imports`` похож по действию на выражение ``include`` в PHP и
+гарантирует что главный конфигурационный файл (``config.yml``) будет загружен
+в первую очередь. Остальной код корректирует конфигурацию по-умолчанию для
+увеличения порога логгирования и прочих настроек, специфичных для разработки.
 
-Both the ``prod`` and ``test`` environments follow the same model: each environment
-imports the base configuration file and then modifies its configuration values
-to fit the needs of the specific environment. This is just a convention,
+Оба окружения – ``prod`` и ``test`` следуют той же модели: каждое окружение
+импортирует базовые настройки и модифицирует их значения для своих нужд. This
+is just a convention,
 but one that allows you to reuse most of your configuration and customize
 just pieces of it between environments.
 
 Заключение
 ------------
 
-Поздравляем! Вы усвоили все фундаментальные аспекты Symfony2 и обнаружили, какими лёгкими и в то же время гибкими они могут быть. И, поскольку на подходе ещё *много* интересного, обязательно запомните следующие положения:
+Поздравляем! Вы усвоили все фундаментальные аспекты Symfony2 и обнаружили,
+какими лёгкими и в то же время гибкими они могут быть. И, поскольку на подходе
+ещё *много* интересного, обязательно запомните следующие положения:
 
 * Создание страниц – это три простых шага, включающих **маршрут**,
   **контроллер** и (опционально) **шаблон**.
@@ -949,13 +942,16 @@ just pieces of it between environments.
   внутри *пакета*, который представляет собой структурированный набор файлов,
   реализующих эту функцию;
 
-* **настройки** каждого пакета располагаются в директории ``app/config`` и могут
-  быть записаны в формате YAML, XML или PHP;
+* **настройки** каждого пакета располагаются в директории ``app/config`` и
+  могут быть записаны в формате YAML, XML или PHP;
 
 * каждое **окружение** доступно через свой отдельный фронт-контроллер
   (например ``app.php`` и ``app_dev.php``) и загружает отдельный файл настроек.
 
-Далее, каждая глава книги познакомит вас с все более и более мощными инструментами и более глубокими концепциями. Чем больше вы знаете о Symfony2, тем больше вы будете ценить гибкость его архитектуры и его обширные возможности для быстрой разработки приложений.
+Далее, каждая глава книги познакомит вас с все более и более мощными
+инструментами и более глубокими концепциями. Чем больше вы знаете о Symfony2,
+тем больше вы будете ценить гибкость его архитектуры и его обширные
+возможности для быстрой разработки приложений.
 
 .. _`Twig`: http://www.twig-project.org
 .. _`third-party bundles`: http://symfony2bundles.org/
