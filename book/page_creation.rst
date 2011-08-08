@@ -1,67 +1,60 @@
 .. index::
-   single: Page creation
+   single: Создание страниц
 
-Creating Pages in Symfony2
-==========================
+Создание страниц в Symfony2
+=============================
 
-Creating a new page in Symfony2 is a simple two-step process:
+Создание новой страницы в Symfony2 это простой процесс, состоящий из 2 шагов:
 
-* *Create a route*: A route defines the URL (e.g. ``/about``) to your page
-  and specifies a controller (which is a PHP function) that Symfony2 should
-  execute when the URL of an incoming request matches the route pattern;
+* *Создание маршрута*: Маршрут определяет URI (например ``/about``) для вашей
+  страницы, а также контроллер (PHP функция), который Symfony2 должен выполнить,
+  когда URI входящего запроса совпадет шаблоном маршрута;
 
-* *Create a controller*: A controller is a PHP function that takes the incoming
-  request and transforms it into the Symfony2 ``Response`` object that's
-  returned to the user.
+* *Создание контроллера*: Контроллер – это PHP функция, которая принимает входящий запрос и трансформирует его в объект ``Response``.
 
-This simple approach is beautiful because it matches the way that the Web works.
-Every interaction on the Web is initiated by an HTTP request. The job of
-your application is simply to interpret the request and return the appropriate
-HTTP response.
+Нам нравится такой подход, потому что он соответствует тому как работает Web. Каждое взаимодействие в Web инициализируется HTTP запросом. Забота вашего приложения – интерпретировать запрос и вернуть соответствующий ответ.
 
-Symfony2 follows this philosophy and provides you with tools and conventions
-to keep your application organized as it grows in users and complexity.
+Symfony2 следует этой философии и предлагает вам инструменты и соглашения, для того чтобы ваше приложение оставалось структурированным при росте его сложности.
 
-Sounds simple enough? Let's dive in!
+Звучит просто? Давайте попробуем!
 
 .. index::
-   single: Page creation; Example
+   single: Создание страниц; Пример
 
-The "Hello Symfony!" Page
--------------------------
+Страница "Hello Symfony!"
+----------------------------
 
-Let's start with a spin off of the classic "Hello World!" application. When
-you're finished, the user will be able to get a personal greeting (e.g. "Hello Symfony")
-by going to the following URL:
+Давайте начнем с классического приложения “Hello World!”. Когда мы закончим, пользователь будет иметь возможность получить персональное приветствие, перейдя по следующему URL:
 
 .. code-block:: text
 
     http://localhost/app_dev.php/hello/Symfony
 
-Actually, you'll be able to replace ``Symfony`` with any other name to be
-greeted. To create the page, follow the simple two-step process.
+Вы также сможете заменить ``Symfony`` на другое имя и получить новое приветствие. Для создания этой страницы мы пройдем простой путь из двух шагов.
 
 .. note::
 
-    The tutorial assumes that you've already downloaded Symfony2 and configured
-    your webserver. The above URL assumes that ``localhost`` points to the
-    ``web`` directory of your new Symfony2 project. For detailed information
-    on this process, see the :doc:`Installing Symfony2</book/installation>`.
+    Данное руководство подразумевает, что вы уже скачали Symfony2 и настроили ваш
+    вебсервер. URL, указанный выше, подразумевает, что ``localhost`` указывает на
+    ``web``-директорию вашего нового Symfony2 проекта. Если же вы ещё не выполнили
+    этих шагов, рекомендуется их выполнить, прежде чем вы продолжите читать. Для
+    подробной информации прочтите :doc:`Установка Symfony2</book/installation>`.
 
-Before you begin: Create the Bundle
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Прежде чем вы начнете: Создание пакета (bundle)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Before you begin, you'll need to create a *bundle*. In Symfony2, a :term:`bundle`
-is like a plugin, except that all of the code in your application will live
-inside a bundle.
+Прежде чем начать, вам необходимо создать пакет (*bundle*). В
+Symfony2 :term:`пакет` напоминает плагин, за исключением того, что весь
+код вашего приложения будет расположен внутри такого пакета.
 
-A bundle is nothing more than a directory that houses everything related
-to a specific feature, including PHP classes, configuration, and even stylesheets
-and Javascript files (see :ref:`page-creation-bundles`).
+Вообще говоря, пакет – это не более чем директория (соответствующая тем не
+менее пространству имен PHP), которая содержит все что относится к какой-то
+специфической функции, включая PHP-классы, конфигурацию и даже стили и
+Javascript-файлы (см. :ref:`page-creation-bundles`).
 
-To create a bundle called ``AcmeHelloBundle`` (a play bundle that you'll
-build in this chapter), run the following command and follow the on-screen
-instructions (use all of the default options):
+Для создания пакета с именем ``AcmeHelloBundle`` (демо-пакет, который мы
+создадим в ходе прочтения данной статьи), выполните следующую команду и
+следуйте инструкциям на экране (используйте настройки по-умолчанию):
 
 .. code-block:: bash
 
@@ -83,15 +76,15 @@ the bundle is registered with the kernel::
         return $bundles;
     }
 
-Now that you have a bundle setup, you can begin building your application
-inside the bundle.
+Теперь, когда мы создали и подключили пакет, мы можем начать создание нашего приложения в нём.
 
-Step 1: Create the Route
-~~~~~~~~~~~~~~~~~~~~~~~~
+Шаг 1: Создание маршрута
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-By default, the routing configuration file in a Symfony2 application is
-located at ``app/config/routing.yml``. Like all configuration in Symfony2,
-you can also choose to use XML or PHP out of the box to configure routes.
+По умолчанию, конфигурационный файл маршрутизатора в приложении Symfony2,
+располагается в ``app/config/routing.yml``. Для конфигурирования
+маршрутизатора, а также любых прочих конфигураций Symfony2, вы можете также
+использовать XML или PHP формат.
 
 If you look at the main routing file, you'll see that Symfony already added
 an entry when you generated the ``AcmeHelloBundle``:
@@ -175,27 +168,27 @@ the new route that defines the URL of the page that you're about to create:
 
         return $collection;
 
-The routing consists of two basic pieces: the ``pattern``, which is the URL
-that this route will match, and a ``defaults`` array, which specifies the
-controller that should be executed. The placeholder syntax in the pattern
-(``{name}``) is a wildcard. It means that ``/hello/Ryan``, ``/hello/Fabien``
-or any other similar URL will match this route. The ``{name}`` placeholder
-parameter will also be passed to the controller so that you can use its value
-to personally greet the user.
+Маршрут состоит из двух основных частей: ``pattern``, с которым сравнивается
+URI, а также массив ``defaults`` в котором указывается контроллер, который
+необходимо выполнить. Синтаксис указателя места заполнения (placeholder) в
+шаблоне (``{name}``) – это групповой символ (wildcard). Он означает, что URI
+``/hello/Ryan``, ``/hello/Fabien``, а также прочие, походие на них, будут
+соответствовать этому маршруту. Параметр, определённый указателем ``{name}``
+также будет передан в наш контроллер, так что мы сможем использовать его,
+чтобы поприветствовать пользователя.
 
 .. note::
 
-  The routing system has many more great features for creating flexible
-  and powerful URL structures in your application. For more details, see
-  the chapter all about :doc:`Routing </book/routing>`.
+  Система маршрутизации имеет еще множество замечательных функций для создания
+  гибких и функциональных структур URI в нашем приложении. За дополнительной
+  информацией вы можете обратиться к главе :doc:`Маршрутизация </book/routing>`.
 
-Step 2: Create the Controller
+Шаг 2: Создание Контроллера
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When a URL such as ``/hello/Ryan`` is handled by the application, the ``hello``
-route is matched and the ``AcmeHelloBundle:Hello:index`` controller is executed
-by the framework. The second step of the page-creation process is to create
-that controller.
+Когда URI вида ``/hello/Ryan`` обнаруживается приложением в запросе, маршрут
+``hello`` сработает и будет вызван контроллер ``AcmeHelloBundle:Hello:index``.
+Следующим нашим шагом будет создание этого контроллера.
 
 The controller - ``AcmeHelloBundle:Hello:index`` is the *logical* name of
 the controller, and it maps to the ``indexAction`` method of a PHP class
@@ -211,11 +204,11 @@ inside your ``AcmeHelloBundle``::
     {
     }
 
-In reality, the controller is nothing more than a PHP method that you create
-and Symfony executes. This is where your code uses information from the request
-to build and prepare the resource being requested. Except in some advanced
-cases, the end product of a controller is always the same: a Symfony2 ``Response``
-object.
+В действительности, контроллер – это не что иное, как метод PHP класса,
+который мы создаем, а Symfony выполняет. Это то место, где приложение,
+используя информацию из запроса, создает запрошенный ресурс. За исключением
+некоторых особых случаев, результатом работы контроллера всегда является
+объект Symfony2 ``Response``.
 
 Create the ``indexAction`` method that Symfony will execute when the ``hello``
 route is matched::
@@ -231,32 +224,34 @@ route is matched::
         }
     }
 
-The controller is simple: it creates a new ``Response`` object, whose first
-argument is the content that should be used in the response (a small HTML
-page in this example).
+Этот контроллер предельно прост: он создает новый объект ``Response`` чьим
+первым аргументом является контент, который будет использован для создания
+ответа (в нашем случае это маленькая HTML-страница, код которой мы указали
+прямо в контроллере).
 
-Congratulations! After creating only a route and a controller, you already
-have a fully-functional page! If you've setup everything correctly, your
-application should greet you:
+Примите мои поздравления! После создания маршрута и контроллера, вы уже имеете
+полноценную страницу! Если вы все настроили корректно, ваше приложение должно
+поприветствовать вас:
 
 .. code-block:: text
 
     http://localhost/app_dev.php/hello/Ryan
 
-An optional, but common, third step in the process is to create a template.
+Опциональным (но как правило востребованным) третьим шагом является создание
+шаблона.
 
 .. note::
 
-   Controllers are the main entry point for your code and a key ingredient
-   when creating pages. Much more information can be found in the
-   :doc:`Controller Chapter </book/controller>`.
+   Контроллер – это главная точка входа для вашего кода и ключевой ингридиет
+   при создании страниц. Больше информации о контроллерах вы можете найти в
+   главе :doc:`Контроллеры</book/controller>`.
 
-Optional Step 3: Create the Template
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Необязательный шаг 3: Создание шаблона
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Templates allows you to move all of the presentation (e.g. HTML code) into
-a separate file and reuse different portions of the page layout. Instead
-of writing the HTML inside the controller, render a template instead:
+Шаблоны позволяют нам вынести разметку страниц (HTML код как вравило) в
+отдельный файл и повторно использовать различные части шаблона страницы.
+Вместо того чтобы писать код внутри контроллера, воспользуемся шаблоном:
 
 .. code-block:: php
     :linenos:
@@ -279,24 +274,25 @@ of writing the HTML inside the controller, render a template instead:
 
 .. note::
 
-   In order to use the ``render()`` method, your controller must extend the
-   ``Symfony\Bundle\FrameworkBundle\Controller\Controller`` class (API
-   docs: :class:`Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller`),
-   which adds shortcuts for tasks that are common inside controllers. This
-   is done in the above example by adding the ``use`` statement on line 4
-   and then extending ``Controller`` on line 6.
+   Для того, чтобы использовать метод ``render()`` необходимо отнаследоваться
+   от класса ``Symfony\Bundle\FrameworkBundle\Controller\Controller``
+   (API :class:`Symfony\\Bundle\\FrameworkBundle\\Controller\\Controller`),
+   который добавляет несколько методов для быстрого вызова для часто
+   употребляемых функций в контроллере. В примере выше это сделано добавлением
+   ``use`` на линии 4 и расширением класса ``Controller`` на линии 6.
 
-The ``render()`` method creates a ``Response`` object filled with the content
-of the given, rendered template. Like any other controller, you will ultimately
-return that ``Response`` object.
+Метод ``render()`` создает объект ``Response`` заполненный содержанием
+обработанного (рендереного) шаблона. Как и любой другой контроллер, вы в конце
+концов вернете объект ``Response``.
 
-Notice that there are two different examples for rendering the template.
-By default, Symfony2 supports two different templating languages: classic
-PHP templates and the succinct but powerful `Twig`_ templates. Don't be
-alarmed - you're free to choose either or even both in the same project.
+Обратите внимание, что есть две различные возможности рендеринга шаблонов.
+Symfony2 по-умолчанию, поддерживает 2 языка шаблонов: классические PHP-шаблоны
+и простой, но мощный язык шаблонов `Twig`_. Но не пугайтесь, вы свободны в
+выборе того или иного из них, кроме того вы можете использовать оба в рамках
+одного проекта.
 
-The controller renders the ``AcmeHelloBundle:Hello:index.html.twig`` template,
-which uses the following naming convention:
+Контроллер отображает шаблон ``AcmeHelloBundle:Hello:index.html.twig``,
+который использует следующие соглашения:
 
     **BundleName**:**ControllerName**:**TemplateName**
 
@@ -305,8 +301,7 @@ location using the following convention.
 
     **/path/to/BundleName**/Resources/views/**ControllerName**/**TemplateName**
 
-In this case, ``AcmeHelloBundle`` is the bundle name, ``Hello`` is the
-controller, and ``index.html.twig`` the template:
+Таким образом, ``AcmeHelloBundle`` – это имя пакета, ``Hello`` – это контроллер и ``index.html.twig`` это шаблон:
 
 .. configuration-block::
 
@@ -327,15 +322,16 @@ controller, and ``index.html.twig`` the template:
 
         Hello <?php echo $view->escape($name) ?>!
 
-Let's step through the Twig template line-by-line:
+Давайте рассмотрим подробнее шаблон Twig:
 
-* *line 2*: The ``extends`` token defines a parent template. The template
-  explicitly defines a layout file inside of which it will be placed.
+* *Строка 2*: Токен ``extends`` определяет родительский шаблон. Таким образом
+  сам шаблон однозначным образом определяет родителя (layout) внутрь которого
+  он будет помещен.
 
-* *line 4*: The ``block`` token says that everything inside should be placed
-  inside a block called ``body``. As you'll see, it's the responsibility
-  of the parent template (``base.html.twig``) to ultimately render the
-  block called ``body``.
+* *Строка 4*: Токен ``block`` означает, что все внутри него будет помещено в
+  блок с именем ``body``. Как мы увидим ниже, это уже обязанность
+  родительского шаблона (``base.html.twig``) полностью отобразить блок
+  ``body``.
 
 The parent template, ``::base.html.twig``, is missing both the **BundleName**
 and **ControllerName** portions of its name (hence the double colon (``::``)
@@ -378,34 +374,36 @@ and in the ``app`` directory:
             </body>
         </html>
 
-The base template file defines the HTML layout and renders the ``body`` block
-that you defined in the ``index.html.twig`` template. It also renders a ``title``
-block, which you could choose to define in the ``index.html.twig`` template.
-Since you did not define the ``title`` block in the child template, it defaults
-to "Hello Application".
+Базовый шаблон определяет HTML разметку блока ``body`` который мы определили
+в шаблоне ``index.html.twig``. Он также отображает блок ``title``
+который мы также можем определить в ``index.html.twig``. Так как мы не
+определили блок ``title`` в дочернем шаблоне, он примет значение по умолчанию
+– “Hello Application”.
 
-Templates are a powerful way to render and organize the content for your
-page. A template can render anything, from HTML markup, to CSS code, or anything
-else that the controller may need to return.
+Шаблоны являются мощным инструментом по организации и отображению контента
+ваших страниц – HTML разметки, CSS стилей, а также всего прочего, что может
+потребоваться вернуть контроллеру.
 
-In the lifecycle of handling a request, the templating engine is simply
-an optional tool. Recall that the goal of each controller is to return a
-``Response`` object. Templates are a powerful, but optional, tool for creating
-the content for that ``Response`` object.
+Но шаблонизатор – это просто средство для достижения цели. А цель состоит в
+том, чтобы каждый контроллер возвращал объект ``Response``. Таким образом,
+шаблоны мощный, но опциональный инструмент для создания контента для объекта
+``Response``.
 
 .. index::
-   single: Directory Structure
+   single: Структура директорий
 
-The Directory Structure
+Структура директорий
 -----------------------
 
-After just a few short sections, you already understand the philosophy behind
-creating and rendering pages in Symfony2. You've also already begun to see
-how Symfony2 projects are structured and organized. By the end of this section,
-you'll know where to find and put different types of files and why.
+Мы прочитали всего лишь после нескольких коротких секций, а вы уже уяснили
+философию создания и отображения страниц в Symfony2. Поэтому без лишних слов
+мы приступим к изучению того, как организованы и структурированы проекты
+Symfony2. К концу этой секции вы будете знать где найти и куда поместить
+различные типы файлов. И более того, будет понимать – почему!
 
-Though entirely flexible, by default, each Symfony :term:`application` has
-the same basic and recommended directory structure:
+Изначально созданный очень гибким, по умолчанию каждое
+Symfony :term:`приложение` имеет одну и ту же базовую (и рекомендуемую)
+структуру директорий:
 
 * ``app/``: This directory contains the application configuration;
 
@@ -522,25 +520,25 @@ templates, configuration files, stylesheets, etc) that drives *your* application
 When developing, the vast majority of your work will be done inside one or
 more bundles that you create in this directory.
 
-But what exactly is a :term:`bundle`?
+But what exactly is a :term:`пакет`?
 
 .. _page-creation-bundles:
 
-The Bundle System
+Система пакетов
 -----------------
 
-A bundle is similar to a plugin in other software, but even better. The key
-difference is that *everything* is a bundle in Symfony2, including both the
-core framework functionality and the code written for your application.
-Bundles are first-class citizens in Symfony2. This gives you the flexibility
-to use pre-built features packaged in `third-party bundles`_ or to distribute
-your own bundles. It makes it easy to pick and choose which features to enable
-in your application and to optimize them the way you want.
+Пакет чем-то схож с плагином, но он ещё лучше. Ключевое отличие состоит в
+том, что *все* есть пакет в Symfony2, включая функционал ядра и код вашего
+приложения. Пакеты – это граждане высшего сорта в Symfony2. Они дают вам
+возможность использовать уже готовые пакеты, которые вы можете найти по адресу
+`third-party bundles`_.Вы также можете там выкладывать свои пакеты. Они также
+дают возможность легко и просто выбрать, какие именно функции подключить в
+вашем приложении.
 
 .. note::
 
-   While you'll learn the basics here, an entire cookbook entry is devoted
-   to the organization and best practices of :doc:`bundles</cookbook/bundles/best_practices>`.
+   Здесь мы рассмотрим лишь основы, более детальную информацию по пакетам вы
+   можете найти в главе :doc:`пакеты</cookbook/bundles/best_practices>`.
 
 A bundle is simply a structured set of files within a directory that implement
 a single feature. You might create a ``BlogBundle``, a ``ForumBundle`` or
@@ -935,35 +933,29 @@ to fit the needs of the specific environment. This is just a convention,
 but one that allows you to reuse most of your configuration and customize
 just pieces of it between environments.
 
-Summary
--------
+Заключение
+------------
 
-Congratulations! You've now seen every fundamental aspect of Symfony2 and have
-hopefully discovered how easy and flexible it can be. And while there are
-*a lot* of features still to come, be sure to keep the following basic points
-in mind:
+Поздравляем! Вы усвоили все фундаментальные аспекты Symfony2 и обнаружили, какими лёгкими и в то же время гибкими они могут быть. И, поскольку на подходе ещё *много* интересного, обязательно запомните следующие положения:
 
-* creating a page is a three-step process involving a **route**, a **controller**
-  and (optionally) a **template**.
+* Создание страниц – это три простых шага, включающих **маршрут**,
+  **контроллер** и (опционально) **шаблон**.
 
-* each project contains just a few main directories: ``web/`` (web assets and
-  the front controllers), ``app/`` (configuration), ``src/`` (your bundles),
-  and ``vendor/`` (third-party code) (there's also a ``bin/`` directory that's
-  used to help updated vendor libraries);
+* Каждое приложение должно состоять только из 4х директорий: ``web/`` (web
+  assets и front controllers), ``app/`` (настройки), ``src/`` (ваши пакеты),
+  и ``vendor/`` (сторонние библиотеки);
 
-* each feature in Symfony2 (including the Symfony2 framework core) is organized
-  into a *bundle*, which is a structured set of files for that feature;
+* Каждая функция в Symfony2 (включая ядро фреймворка) должна располагаться
+  внутри *пакета*, который представляет собой структурированный набор файлов,
+  реализующих эту функцию;
 
-* the **configuration** for each bundle lives in the ``app/config`` directory
-  and can be specified in YAML, XML or PHP;
+* **настройки** каждого пакета располагаются в директории ``app/config`` и могут
+  быть записаны в формате YAML, XML или PHP;
 
-* each **environment** is accessible via a different front controller (e.g.
-  ``app.php`` and ``app_dev.php``) and loads a different configuration file.
+* каждое **окружение** доступно через свой отдельный фронт-контроллер
+  (например ``app.php`` и ``app_dev.php``) и загружает отдельный файл настроек.
 
-From here, each chapter will introduce you to more and more powerful tools
-and advanced concepts. The more you know about Symfony2, the more you'll
-appreciate the flexibility of its architecture and the power it gives you
-to rapidly develop applications.
+Далее, каждая глава книги познакомит вас с все более и более мощными инструментами и более глубокими концепциями. Чем больше вы знаете о Symfony2, тем больше вы будете ценить гибкость его архитектуры и его обширные возможности для быстрой разработки приложений.
 
 .. _`Twig`: http://www.twig-project.org
 .. _`third-party bundles`: http://symfony2bundles.org/

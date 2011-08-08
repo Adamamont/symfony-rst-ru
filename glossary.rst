@@ -1,7 +1,7 @@
 :orphan:
 
-Glossary
-========
+Словарь терминов
+=================
 
 .. glossary::
    :sorted:
@@ -11,26 +11,25 @@ Glossary
         selection of bundles, a sensible directory structure, a default
         configuration, and an optional configuration system.
 
-   Project
-        A *Project* is a directory composed of an Application, a set of
-        bundles, vendor libraries, an autoloader, and web front controller
-        scripts.
+   Проект
+        *Проект* - это директория, состоящая из Приложения, набора Пакетов (бандлов),
+        сторонних библиотек, автозагрузчика и web скриптов фронт-контроллера.
 
-   Application
-        An *Application* is a directory containing the *configuration* for a
-        given set of Bundles.
+   Приложение
+        *Приложение* - это папка, содержащая *конфигурацию* для данного
+        набора Пакетов (бандлов).
 
-   Bundle
-        A *Bundle* is a directory containing a set of files (PHP files,
-        stylesheets, JavaScripts, images, ...) that *implement* a single
-        feature (a blog, a forum, etc). In Symfony2, (*almost*) everything
-        lives inside a bundle. (see :ref:`page-creation-bundles`)
+   Пакет
+        *Пакет* - это структурированный набор файлов (PHP файлов, таблиц стилей,
+        JavaScript-ов, картинок и т. д.), *представляющий* одну функциональность
+        (блог, форум и т. д.) и который легко может быть использован другими
+        разработчиками. (см. :ref:`page-creation-bundles`)
 
    Front Controller
-        A *Front Controller* is a short PHP script that lives in the web directory
-        of your project. Typically, *all* requests are handled by executing
-        the same front controller, whose job is to bootstrap the Symfony
-        application.
+        *Фронт контроллер* это короткий PHP код, который располагается в web
+        директории вашего проекта. Обычно, *все* запросы обрабатываются
+        посредством запуска одного и того же фронт контроллера, чья работа
+        заключается в начальной загрузке приложения Symfony2.
 
    Controller
         A *controller* is a PHP function that houses all the logic necessary

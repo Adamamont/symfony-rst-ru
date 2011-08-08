@@ -1,6 +1,3 @@
-Symfony2 Documentation
-======================
-
 Quick Tour
 ----------
 
