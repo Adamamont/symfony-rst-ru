@@ -1,8 +1,8 @@
 .. index::
    single: Symfony2 Fundamentals
 
-Symfony2 and HTTP Fundamentals
-==============================
+Основы Symfony2 и протокола HTTP 
+================================
 
 Congratulations! By learning about Symfony2, you're well on your way towards
 being a more *productive*, *well-rounded* and *popular* web developer (actually,
@@ -42,8 +42,8 @@ how to master it.
 .. index::
    single: HTTP; Request-response paradigm
 
-Step1: The Client sends a Request
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Шаг 1: Клиент отправляет запрос
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Every conversation on the web starts with a *request*. The request is a text
 message created by a client (e.g. a browser, an iPhone app, etc) in a
@@ -71,22 +71,20 @@ most important and contains two things: the URI and the HTTP method.
 
 The URI (e.g. ``/``, ``/contact``, etc) is the unique address or location
 that identifies the resource the client wants. The HTTP method (e.g. ``GET``)
-defines what you want to *do* with the resource. The HTTP methods are the
-*verbs* of the request and define the few common ways that you can act upon
-the resource:
+defines what you want to *do* with the resource. Методы HTTP являются *глаголами* HTTP запроса и определяют несколько путей взаимодействия с ресурсами:
 
 +----------+---------------------------------------+
-| *GET*    | Retrieve the resource from the server |
+| *GET*    | Получить ресурс с сервера             |
 +----------+---------------------------------------+
-| *POST*   | Create a resource on the server       |
+| *POST*   | Создать ресурс на сервере             |
 +----------+---------------------------------------+
-| *PUT*    | Update the resource on the server     |
+| *PUT*    | Обновить ресурс на сервер             |
 +----------+---------------------------------------+
-| *DELETE* | Delete the resource from the server   |
+| *DELETE* | Удалить ресурс с сервера              |
 +----------+---------------------------------------+
 
-With this in mind, you can imagine what an HTTP request might look like to
-delete a specific blog entry, for example:
+Теперь мы можем представить, как может выглядеть HTTP запрос на удаление,
+к примеру, записи в блоге:
 
 .. code-block:: text
 
@@ -94,24 +92,21 @@ delete a specific blog entry, for example:
 
 .. note::
 
-    There are actually nine HTTP methods defined by the HTTP specification,
-    but many of them are not widely used or supported. In reality, many modern
-    browsers don't support the ``PUT`` and ``DELETE`` methods.
+    На самом деле существуют девять HTTP методов, определенных спецификацией HTTP,
+    но многие из них не распространены широко или не спользуются популярностью.
+    В реальности многие современные браузеры не поддерживают методы ``PUT`` и ``DELETE``.
 
-In addition to the first line, an HTTP request invariably contains other
-lines of information called request headers. The headers can supply a wide
-range of information such as the requested ``Host``, the response formats
-the client accepts (``Accept``) and the application the client is using to
-make the request (``User-Agent``). Many other headers exist and can be found
-on Wikipedia's `List of HTTP header fields`_ article.
+HTTP-запрос также может содержать и другую информацию - HTTP заголовки. Они
+могут предоставлять много дополнительной информации, такой как запрошенный узел (``Host``),
+форматы отвеьа, которые может принимать клиент (``Accept``) и приложение, которое используется клиентом
+для передачи запроса (``User-Agent``). Другие заголовки описаны в материале из Википедии `Список заголовков HTTP`_.
 
-Step 2: The Server returns a Response
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Шаг 2: Сервер возвращает Ответ
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Once a server has received the request, it knows exactly which resource the
-client needs (via the URI) and what the client wants to do with that resource
-(via the method). For example, in the case of a GET request, the server
-prepares the resource and returns it in an HTTP response. Consider the response
+Теперь сервер, прочитав заголовки запроса, обернутые в формат HTTP, знает,
+какой конкретно ресурс нужен клиенту (по URI) и что клиент собирается с ним делать (метод HTTP).
+В случае с GET-запросом, сервер подготиавливает ресурс и возвращает его как HTTP-ответ. Consider the response
 from the xkcd web server:
 
 .. image:: /images/http-xkcd.png
