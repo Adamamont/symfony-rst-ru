@@ -1,25 +1,25 @@
-The Big Picture
-===============
+Общая картина
+=============
 
-Start using Symfony2 in 10 minutes! This chapter will walk you through some
-of the most important concepts behind Symfony2 and explain how you can get
-started quickly by showing you a simple project in action.
+Итак вы хотите попробовать Symfony2, но в наличии у вас не более 10 минут?
+Первая часть этого учебника написана для вас. Она объяснит как быстро начать
+с Symfony2, показав структуру простого готового проекта.
 
-If you've used a web framework before, you should feel right at home with
-Symfony2. If not, welcome to a whole new way of developing web applications!
+Если вы когда-нибудь использовали какой-либо веб-фреймворк прежде, вы будете
+чувствовать себя в Symfony2 как дома.
 
 .. tip::
 
     Want to learn why and when you need to use a framework? Read the "`Symfony
     in 5 minutes`_" document.
 
-Downloading Symfony2
---------------------
+Загрузка Symfony2
+-----------------
 
-First, check that you have installed and configured a Web server (such as
-Apache) with PHP 5.3.2 or higher.
+В первую очередь, убедитесь что у вас установлен как минимум PHP 5.3.2 и он
+настроен для работы с web сервером, таким как Apache.
 
-Ready? Start by downloading the "`Symfony2 Standard Edition`_", a Symfony
+Готовы? Давайте начнем с загрузки "`Symfony2 Standard Edition`_", a Symfony
 :term:`distribution` that is preconfigured for the most common use cases and
 also contains some code that demonstrates how to use Symfony2 (get the archive
 with the *vendors* included to get started even faster).
@@ -60,19 +60,17 @@ have a ``Symfony/`` directory that looks like this:
 
         php bin/vendors install
 
-Checking the Configuration
---------------------------
+Проверка конфигурации
+---------------------
 
-Symfony2 comes with a visual server configuration tester to help avoid some
-headaches that come from Web server or PHP misconfiguration. Use the following
-URL to see the diagnostics for your machine:
+Для того чтобы избежать головной боли в будущем, проверьте, сможет ли ваша
+система запустить Symfony2 без проблем – для этого откройте следующий URL:
 
 .. code-block:: text
 
     http://localhost/Symfony/web/config.php
 
-If there are any outstanding issues listed, correct them. You might also tweak
-your configuration by following any given recommendations. When everything is
+Внимательно прочитайте вывод скрипта и исправьте все проблемы, которые он найдет. When everything is
 fine, click on "*Bypass configuration and go to the Welcome page*" to request
 your first "real" Symfony2 webpage:
 
@@ -80,13 +78,13 @@ your first "real" Symfony2 webpage:
 
     http://localhost/Symfony/web/app_dev.php/
 
-Symfony2 should welcome and congratulate you for your hard work so far!
+Symfony2 должен поблагодарить вас за приложенные усилия!
 
 .. image:: /images/quick_tour/welcome.jpg
    :align: center
 
-Understanding the Fundamentals
-------------------------------
+Понимание основ
+---------------
 
 One of the main goals of a framework is to ensure `Separation of Concerns`_.
 This keeps your code organized and allows your application to evolve easily
@@ -111,20 +109,20 @@ Symfony2 (replace *Fabien* with your first name):
 .. image:: /images/quick_tour/hello_fabien.png
    :align: center
 
-What's going on here? Let's dissect the URL:
+Что происходит в этом месте? Давайте разберём URL:
 
-* ``app_dev.php``: This is a :term:`front controller`. It is the unique entry
-  point of the application and it responds to all user requests;
+* ``app_dev.php``: Это :term:`front controller`. Уникальная точка входа для приложения,
+  которая отвечает на все запросы пользователя;
 
-* ``/demo/hello/Fabien``: This is the *virtual path* to the resource the user
-  wants to access.
+* ``/demo/hello/Fabien``: Это *виртуальный путь* ресурса, к которому пользователь
+  хочет получить доступ.
 
-Your responsibility as a developer is to write the code that maps the user's
-*request* (``/demo/hello/Fabien``) to the *resource* associated with it
-(the ``Hello Fabien!`` HTML page).
+От вас как от разработчика требуется написать код, который сопоставит
+пользовательский *запрос* (``/hello/Fabien``) и ассоциированный с ним ресурс
+(Страница ``Hello Fabien!``).
 
-Routing
-~~~~~~~
+Маршрутизация
+~~~~~~~~~~~~~
 
 Symfony2 routes the request to the code that handles it by trying to match the
 requested URL against some configured patterns. By default, these patterns
@@ -162,7 +160,7 @@ will be executed. In the next section, you'll learn exactly what that means.
     the configuration format you choose as everything is cached on the very
     first request.
 
-Controllers
+Контроллеры
 ~~~~~~~~~~~
 
 A controller is a fancy name for a PHP function or method that handles incoming
@@ -304,8 +302,8 @@ template is rendered (located at ``src/Acme/DemoBundle/Resources/views/Demo/hell
     the simple examples shown in this tutorial. Learn more about "`annotations
     in controllers`_" in the official documentation.
 
-Templates
-~~~~~~~~~
+Шаблоны
+~~~~~~~
 
 The controller renders the
 ``src/Acme/DemoBundle/Resources/views/Demo/hello.html.twig`` template (or
@@ -405,8 +403,8 @@ The ``dev`` environment (which loads the ``config_dev.yml`` configuration file)
 imports the global ``config.yml`` file and then modifies it by, in this example,
 enabling the web debug toolbar.
 
-Final Thoughts
---------------
+Заключительное слово
+--------------------
 
 Congratulations! You've had your first taste of Symfony2 code. That wasn't so
 hard, was it? There's a lot more to explore, but you should already see how
