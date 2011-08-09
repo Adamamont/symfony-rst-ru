@@ -1,5 +1,5 @@
-The Architecture
-================
+Архитектура
+===========
 
 You are my hero! Who would have thought that you would still be here after the
 first three parts? Your efforts will be well rewarded soon. The first three
@@ -7,8 +7,8 @@ parts didn't look too deeply at the architecture of the framework. Because it
 makes Symfony2 stand apart from the framework crowd, let's dive into the
 architecture now.
 
-Understanding the Directory Structure
--------------------------------------
+Структура папок
+---------------
 
 The directory structure of a Symfony2 :term:`application` is rather flexible,
 but the directory structure of the *Standard Edition* distribution reflects
@@ -19,12 +19,12 @@ the typical and recommended structure of a Symfony2 application:
 * ``vendor/``: The third-party dependencies;
 * ``web/``:    The web root directory.
 
-The ``web/`` Directory
-~~~~~~~~~~~~~~~~~~~~~~
+Каталог ``web/``
+~~~~~~~~~~~~~~~~
 
-The web root directory is the home of all public and static files like images,
-stylesheets, and JavaScript files. It is also where each :term:`front controller`
-lives::
+Корневая web директория - это дом для всех публичных и статичных файлов, таких
+как изображения, таблицы стилей и файлы JavaScript. Здесь также обитает
+:term:`front controller`::
 
     // web/app.php
     require_once __DIR__.'/../app/bootstrap.php.cache';
@@ -44,19 +44,18 @@ bootstrap the application.
 
 .. _the-app-dir:
 
-The ``app/`` Directory
-~~~~~~~~~~~~~~~~~~~~~~
+Папка ``app/``
+~~~~~~~~~~~~~~
 
-The ``AppKernel`` class is the main entry point of the application
-configuration and as such, it is stored in the ``app/`` directory.
+Класс ``AppKernel`` это главная входная точка конфигурации приложения, поэтому
+он содержится в директории ``app/``.
 
-This class must implement two methods:
+Этот класс должен реализовывать два метода:
 
-* ``registerBundles()`` must return an array of all bundles needed to run the
-  application;
+* ``registerBundles()`` возвращает массив всех бандлов, необходимых для
+  запуска приложения;
 
-* ``registerContainerConfiguration()`` loads the application configuration
-  (more on this later).
+* ``registerContainerConfiguration()`` загружает конфигурацию  (об этом чуть позже);
 
 PHP autoloading can be configured via ``app/autoload.php``::
 
@@ -100,21 +99,19 @@ your server or locally in your projects.
     autoloader, read the ":doc:`/cookbook/tools/autoloader`" recipe in the
     cookbook.
 
-Understanding the Bundle System
--------------------------------
+Система бандлов
+---------------
 
-This section introduces one of the greatest and most powerful features of
-Symfony2, the :term:`bundle` system.
+Этот раздел кратко поведает вам об одной из существеннейших и наиболее мощных
+особенностей Symfony2, о системе бандлов :term:`bundle`.
 
-A bundle is kind of like a plugin in other software. So why is it called a
-*bundle* and not a *plugin*? This is because *everything* is a bundle in
-Symfony2, from the core framework features to the code you write for your
-application. Bundles are first-class citizens in Symfony2. This gives you
-the flexibility to use pre-built features packaged in third-party bundles
-or to distribute your own bundles. It makes it easy to pick and choose which
-features to enable in your application and optimize them the way you want.
-And at the end of the day, your application code is just as *important* as
-the core framework itself.
+Бандл в некотором роде как плагин в других программах. Почему его назвали
+*бандл*, а не *плагин*? Потому что *всё что угодно* в Symfony2 это бандл, от
+ключевых особенностей фреймворка до кода, который вы пишете для приложения.
+Бандлы это высшая каста в Symfony2. Это даёт вам гибкость в применении как уже
+встроенных особенностей сторонних бандлов, так и в написании своих собственных.
+Бандл позволяет выбрать необходимые для приложения особенности и оптимизировать
+их как вы этого хотите.
 
 Registering a Bundle
 ~~~~~~~~~~~~~~~~~~~~
@@ -156,8 +153,8 @@ They are all part of the core framework.
 Configuring a Bundle
 ~~~~~~~~~~~~~~~~~~~~
 
-Each bundle can be customized via configuration files written in YAML, XML, or
-PHP. Have a look at the default configuration:
+Каждый бандл может быть настроен при помощи конфигурационных файлов, написанных
+на YAML, XML, или PHP. Взгляните на конфигурацию по умолчанию:
 
 .. code-block:: yaml
 
@@ -223,8 +220,8 @@ Each entry like ``framework`` defines the configuration for a specific bundle.
 For example, ``framework`` configures the ``FrameworkBundle`` while ``swiftmailer``
 configures the ``SwiftmailerBundle``.
 
-Each :term:`environment` can override the default configuration by providing a
-specific configuration file. For example, the ``dev`` environment loads the
+Каждое `окружение` (:term:`environment`) может переопределять стандартную
+конфигурацию, задавая специфичный конфигурационный файл. For example, the ``dev`` environment loads the
 ``config_dev.yml`` file, which loads the main configuration (i.e. ``config.yml``)
 and then modifies it to add some debugging tools:
 
@@ -308,13 +305,14 @@ applications, store them locally or globally, your choice.
 Using Vendors
 -------------
 
-Odds are that your application will depend on third-party libraries. Those
-should be stored in the ``vendor/`` directory. This directory already contains
-the Symfony2 libraries, the SwiftMailer library, the Doctrine ORM, the Twig
-templating system, and some other third party libraries and bundles.
+Скорее всего ваше приложение будет зависеть и от сторонних библиотек. Они должны
+хранится в папке ``vendor/``. Она уже содержит библиотеки Symfony2,
+библиотеку SwiftMailer, Doctrine ORM, систему шаблонизации Twig и
+некоторые другие сторонние библиотеки.
 
-Understanding the Cache and Logs
---------------------------------
+
+Кэширование и Логи
+------------------
 
 Symfony2 is probably one of the fastest full-stack frameworks around. But how
 can it be so fast if it parses and interprets tens of YAML and XML files for
@@ -329,37 +327,37 @@ When developing a web application, things can go wrong in many ways. The log
 files in the ``app/logs/`` directory tell you everything about the requests
 and help you fix the problem quickly.
 
-Using the Command Line Interface
---------------------------------
+Интерфейс командной строки
+--------------------------
 
-Each application comes with a command line interface tool (``app/console``)
-that helps you maintain your application. It provides commands that boost your
-productivity by automating tedious and repetitive tasks.
+Все приложения идут с интерфейсом командной строки (``app/console``),
+который
+помогает обслуживать приложение. Он предоставляет команды, которые увеличивают
+вашу продуктивность, автоматизируя частые и повторяющиеся задачи.
 
-Run it without any arguments to learn more about its capabilities:
+Запустите консоль без агрументов, чтобы получить представление о её возможностях:
 
 .. code-block:: bash
 
     php app/console
 
-The ``--help`` option helps you discover the usage of a command:
+Опция ``--help`` поможет вам уточнить возможности использования команды:
 
 .. code-block:: bash
 
     php app/console router:debug --help
 
-Final Thoughts
---------------
+Заключительное слово
+--------------------
 
-Call me crazy, but after reading this part, you should be comfortable with
-moving things around and making Symfony2 work for you. Everything in Symfony2
-is designed to get out of your way. So, feel free to rename and move directories
-around as you see fit.
+Называйте меня сумасшедшим, но после прочтения этой части, вам должно быть
+комфортно перемещать любые вещи и при этом заставить Symfony2 работать на вас.
+В Symfony2 всё сделано так, чтобы вы смогли настроить его на ваше усмотрение.
+Так что, переименовывайте и перемещайте директории как вам угодно.
 
-And that's all for the quick tour. From testing to sending emails, you still
-need to learn a lot to become a Symfony2 master. Ready to dig into these
-topics now? Look no further - go to the official :doc:`/book/index` and pick
-any topic you want.
+Для начала этого достаточно. Вам ещё предстоит многому научиться, от
+тестирования до отправки почты, чтобы стать мастером Symfony2. Готовы
+погрузиться в чтение сейчас? Следуйте на официальную страницу руководств :doc:`/book/index` и выбирайте любую тему.
 
 .. _standards:               http://groups.google.com/group/php-standards/web/psr-0-final-proposal
 .. _convention:              http://pear.php.net/

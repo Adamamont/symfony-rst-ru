@@ -1,7 +1,7 @@
-Quick Tour
-----------
+Краткий Обзор
+-------------
 
-Get started fast with the Symfony2 :doc:`Quick Tour <quick_tour/index>`:
+Быстрый старт с Symfony2 :doc:`Краткий Обзор <quick_tour/index>`:
 
 .. toctree::
     :hidden:
@@ -13,10 +13,10 @@ Get started fast with the Symfony2 :doc:`Quick Tour <quick_tour/index>`:
 * :doc:`quick_tour/the_controller` >
 * :doc:`quick_tour/the_architecture`
 
-Book
-----
+Руководства
+-----------
 
-Dive into Symfony2 with the topical guides:
+Погрузитесь в мир Symfony2 с помощью тематических руководств:
 
 .. toctree::
     :hidden:
@@ -25,7 +25,7 @@ Dive into Symfony2 with the topical guides:
 
 .. include:: /book/map.rst.inc
 
-Cookbook
+Рецепты
 --------
 
 .. toctree::
@@ -33,12 +33,12 @@ Cookbook
 
     cookbook/index
 
-Read the :doc:`Cookbook </cookbook/index>`.
+Прочитайте :doc:`Рецепты </cookbook/index>`.
 
-Reference Documents
--------------------
+Справочные документы
+--------------------
 
-Get answers quickly with reference documents:
+С ними вы быстро получите ответы:
 
 .. toctree::
     :hidden:
@@ -59,10 +59,10 @@ The Symfony Standard Edition comes with some bundles. Learn more about them:
 
 .. include:: /bundles/map.rst.inc
 
-Contributing
-------------
+Участие в проекте
+-----------------
 
-Contribute to Symfony2:
+Примите участие в развитии Symfony2:
 
 .. toctree::
     :hidden:

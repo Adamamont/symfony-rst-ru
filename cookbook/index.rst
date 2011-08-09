@@ -1,5 +1,5 @@
-Cookbook
-========
+Рецепты
+=======
 
 .. toctree::
     :hidden:

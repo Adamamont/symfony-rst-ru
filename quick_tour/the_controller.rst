@@ -1,17 +1,17 @@
-The Controller
-==============
+Контроллер
+==========
 
-Still with us after the first two parts? You are already becoming a Symfony2
-addict! Without further ado, let's discover what controllers can do for you.
+Всё ещё с нами после первых двух частей? Вы становитесь ярым приверженцем Symfony2!
+Давайте, без лишней суеты, узнаем что контроллеры могут сделать для вас.
 
-Using Formats
--------------
+Использование форматов
+----------------------
 
-Nowadays, a web application should be able to deliver more than just HTML
-pages. From XML for RSS feeds or Web Services, to JSON for Ajax requests,
-there are plenty of different formats to choose from. Supporting those formats
-in Symfony2 is straightforward. Tweak the route by adding a default value of
-``xml`` for the ``_format`` variable::
+В наши дни, web приложение должно уметь выдавать не только HTML страницы.
+Начиная с XML для RSS каналов и Web служб, заканчивая JSON для Ajax запросов,
+существует множество различных форматов. Поддержка этих форматов в Symfony2
+проста. Измените маршруты добавив знаначение по-умолчанию
+``xml`` для переменной ``_format``::
 
     // src/Acme/DemoBundle/Controller/DemoController.php
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -36,10 +36,10 @@ automatically selects the right template, here ``hello.xml.twig``:
         <name>{{ name }}</name>
     </hello>
 
-That's all there is to it. For standard formats, Symfony2 will also
-automatically choose the best ``Content-Type`` header for the response. If
-you want to support different formats for a single action, use the ``{_format}``
-placeholder in the route pattern instead::
+Вот и всё что для этого нужно. Для стандартных
+форматов Symfony2 автоматически подбирает заголовок ``Content-Type`` для ответа.
+Если хотите поддержку форматов лишь для одного действия, тогда используйте
+заполнитель ``{_format}`` в паттерне::
 
     // src/Acme/DemoBundle/Controller/DemoController.php
     use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -62,11 +62,11 @@ match. In this example, if you try to request the ``/demo/hello/Fabien.js``
 resource, you will get a 404 HTTP error, as it does not match the ``_format``
 requirement.
 
-Redirecting and Forwarding
---------------------------
+Перемещения и перенаправления
+-----------------------------
 
-If you want to redirect the user to another page, use the ``redirect()``
-method::
+Если вы хотите переместить пользователя на другую страницу, используйте метод
+``redirect()``::
 
     return $this->redirect($this->generateUrl('_demo_hello', array('name' => 'Lucas')));
 
@@ -74,19 +74,19 @@ The ``generateUrl()`` is the same method as the ``path()`` function we used in
 templates. It takes the route name and an array of parameters as arguments and
 returns the associated friendly URL.
 
-You can also easily forward the action to another one with the ``forward()``
-method. Internally, Symfony makes a "sub-request", and returns the ``Response``
-object from that sub-request::
+Также вы можете легко переместить одно действие на другое с помощью метода
+``forward()``. Как и для хелпера ``actions``, он применяет внутренний подзапрос,
+но возвращает объект ``Response``, что позволяет в дальнейшем его изменить::
 
     $response = $this->forward('AcmeDemoBundle:Hello:fancy', array('name' => $name, 'color' => 'green'));
 
     // do something with the response or return it directly
 
-Getting information from the Request
-------------------------------------
+Получение информации о запросе
+------------------------------
 
-Besides the values of the routing placeholders, the controller also has access
-to the ``Request`` object::
+Помимо значений заполнителей для маршрутизации, контроллер имеет доступ к
+объекту ``Request``::
 
     $request = $this->getRequest();
 
@@ -98,8 +98,7 @@ to the ``Request`` object::
 
     $request->request->get('page'); // get a $_POST parameter
 
-In a template, you can also access the ``Request`` object via the
-``app.request`` variable:
+В шаблоне получить доступ к объекту ``Request`` можно через переменную ``app.request``:
 
 .. code-block:: html+jinja
 
@@ -107,16 +106,16 @@ In a template, you can also access the ``Request`` object via the
 
     {{ app.request.parameter('page') }}
 
-Persisting Data in the Session
-------------------------------
+Сохранение и получение информации из сессии
+-------------------------------------------
 
-Even if the HTTP protocol is stateless, Symfony2 provides a nice session object
-that represents the client (be it a real person using a browser, a bot, or a
-web service). Between two requests, Symfony2 stores the attributes in a cookie
-by using native PHP sessions.
+Протокол HTTP не имеет состояний, но Symfony2 предоставляет удобный объект
+сиссии, который представляет клиента (будь он человеком, использующим браузер,
+ботом или web службой). Между двумя запросами Symfony2 хранит атрибуты в cookie,
+используя родные сессии из PHP.
 
-Storing and retrieving information from the session can be easily achieved
-from any controller::
+Сохранение и получение информации из сессии легко выполняется из любого
+контроллера::
 
     $session = $this->getRequest()->getSession();
 
@@ -129,8 +128,8 @@ from any controller::
     // set the user locale
     $session->setLocale('fr');
 
-You can also store small messages that will only be available for the very
-next request::
+Также можно хранить небольшие сообщения, которые будут доступны для следующего
+запроса::
 
     // store a message for the very next request (in a controller)
     $session->setFlash('notice', 'Congratulations, your action succeeded!');
@@ -263,11 +262,11 @@ built-in reverse proxy with Varnish or Squid and easily scale your application.
     via Edge Side Includes (ESI), which are supported natively. Learn more by
     reading the ":doc:`/book/http_cache`" chapter of the book.
 
-Final Thoughts
---------------
+Заключительное слово
+--------------------
 
-That's all there is to it, and I'm not even sure we have spent the full
-10 minutes. We briefly introduced bundles in the first part, and all the
-features we've learned about so far are part of the core framework bundle.
-But thanks to bundles, everything in Symfony2 can be extended or replaced.
-That's the topic of the :doc:`next part of this tutorial<the_architecture>`.
+Вот и всё что хотелось рассказать, и я даже уверен, что мы не использовали все
+отведённые 10 минут. Мы коротко рассмотрели бандлы в первой части, и все 
+особенности о которых мы узнали являются частью бандлов ядра фреймворка.
+Но благодаря бандлам, в Symfony2 всё может быть
+расширено или заменено. Это и есть тема :doc:`следующей части руководства<the_architecture>`.
