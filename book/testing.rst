@@ -215,7 +215,7 @@ XML/HTML::
     $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
     // Утверждает что статус код ответа является редиректом.
-    $this->assertTrue($client->getResponse()->isRedirected('google.com'));
+    $this->assertTrue($client->getResponse()->isRedirect('google.com'));
 
 .. _документацию: http://www.phpunit.de/manual/3.5/en/
 
