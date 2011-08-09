@@ -60,9 +60,9 @@ Javascript-файлы (см. :ref:`page-creation-bundles`).
 
     php app/console generate:bundle --namespace=Acme/HelloBundle --format=yml
 
-Behind the scenes, a directory is created for the bundle at ``src/Acme/HelloBundle``.
-A line is also automatically added to the ``app/AppKernel.php`` file so that
-the bundle is registered with the kernel::
+Команда создает директорию для пакета ``src/Acme/HelloBundle``.
+Так же она добавляет строку в файл ``app/AppKernel.php`` для регистрации пакета
+в ядре приложения::
 
     // app/AppKernel.php
     public function registerBundles()
@@ -86,8 +86,8 @@ the bundle is registered with the kernel::
 маршрутизатора, а также любых прочих конфигураций Symfony2, вы можете также
 использовать XML или PHP формат.
 
-If you look at the main routing file, you'll see that Symfony already added
-an entry when you generated the ``AcmeHelloBundle``:
+Если вы посмотрите на главный файл маршрутизации то увидите, что Symfony
+уже добавила пункт при генерации ``AcmeHelloBundle``:
 
 .. configuration-block::
 
@@ -124,13 +124,14 @@ an entry when you generated the ``AcmeHelloBundle``:
 
         return $collection;
 
-This entry is pretty basic: it tells Symfony to load routing configuration
-from the ``Resources/config/routing.yml`` file that lives inside the ``AcmeHelloBundle``.
-This means that you place routing configuration directly in ``app/config/routing.yml``
-or organize your routes throughout your application, and import them from here.
+Этот пункт очень прост: он говорит Symfony загружать файл настроек из
+``Resources/config/routing.yml``, который находится внутри пакета
+``AcmeHelloBundle``.
+Это значит, что вы можете писать маршруты прямо в ``app/config/routing.yml``
+или организовать их по вашему приложения и загрузить их отсюда.
 
-Now that the ``routing.yml`` file from the bundle is being imported, add
-the new route that defines the URL of the page that you're about to create:
+Когда файл ``routing.yml`` из пакеты был загружен, добавьте новые маршруты
+для страницы, которую мы хотим создать:
 
 .. configuration-block::
 
@@ -190,10 +191,10 @@ URI, а также массив ``defaults`` в котором указывае�
 ``hello`` сработает и будет вызван контроллер ``AcmeHelloBundle:Hello:index``.
 Следующим нашим шагом будет создание этого контроллера.
 
-The controller - ``AcmeHelloBundle:Hello:index`` is the *logical* name of
-the controller, and it maps to the ``indexAction`` method of a PHP class
-called ``Acme\HelloBundle\Controller\Hello``. Start by creating this file
-inside your ``AcmeHelloBundle``::
+Контроллер ``AcmeHelloBundle:Hello:index`` - это *логическое* имя
+контроллера и оно укзаывает на метод ``indexAction`` PHP-класса
+``Acme\HelloBundle\Controller\Hello``. Начните с создания этого файла
+внутри вашего ``AcmeHelloBundle``::
 
     // src/Acme/HelloBundle/Controller/HelloController.php
     namespace Acme\HelloBundle\Controller;
@@ -210,8 +211,8 @@ inside your ``AcmeHelloBundle``::
 некоторых особых случаев, результатом работы контроллера всегда является
 объект Symfony2 ``Response``.
 
-Create the ``indexAction`` method that Symfony will execute when the ``hello``
-route is matched::
+Создайте метод ``indexAction``, который будет запущен при совпадении маршрута
+ ``hello``::
 
     // src/Acme/HelloBundle/Controller/HelloController.php
 
@@ -296,8 +297,8 @@ Symfony2 по-умолчанию, поддерживает 2 языка шабл
 
     **BundleName**:**ControllerName**:**TemplateName**
 
-This is the *logical* name of the template, which is mapped to a physical
-location using the following convention.
+Это *логическое* имя шаблона, которое указывает на физическое положение
+следуя этому соглашению.
 
     **/path/to/BundleName**/Resources/views/**ControllerName**/**TemplateName**
 
@@ -333,10 +334,10 @@ location using the following convention.
   родительского шаблона (``base.html.twig``) полностью отобразить блок
   ``body``.
 
-The parent template, ``::base.html.twig``, is missing both the **BundleName**
-and **ControllerName** portions of its name (hence the double colon (``::``)
-at the beginning). This means that the template lives outside of the bundles
-and in the ``app`` directory:
+В родительском шаблоне, ``::base.html.twig``, отстутствуют обе части 
+**BundleName** и **ControllerName** (пустое двоеточие (``::``) в начале).
+Это означает, что шаблон находиться за пределами пакета, в директории
+``app``:
 
 .. configuration-block::
 
@@ -405,13 +406,13 @@ Symfony2. К концу этой секции вы будете знать гд�
 Symfony :term:`приложение` имеет одну и ту же базовую (и рекомендуемую)
 структуру директорий:
 
-* ``app/``: This directory contains the application configuration;
+* ``app/``: Эта директория содержит настройки приложения;
 
-* ``src/``: All the project PHP code is stored under this directory;
+* ``src/``: Весь PHP код проекта находится в этой директории;
 
-* ``vendor/``: Any vendor libraries are placed here by convention;
+* ``vendor/``: Здесь размещаются сторонние библиотеки;
 
-* ``web/``: This is the web root directory and contains any publicly accessible files;
+* ``web/``: Это корневая директория, видимая web-серверу и содержащая доступные пользователям файлы;
 
 Директория Web
 ~~~~~~~~~~~~~~~~~
@@ -495,9 +496,10 @@ Symfony необходимо знать о вашем приложении. Ва
     чтобы определить их расположение и автоматически подключить файл класса, в 
     случае если класс вам понадобится.
 
-    The autoloader is already configured to look in the ``src/`` directory
-    for any of your PHP classes. For autoloading to work, the class name and
-    path to the file have to follow the same pattern:
+    При такой конфигурации, Symfony2 будет искать в директории src классы
+    из пространства имен ``Acme`` (вы скорее всего будете использовать наименование
+    вашей компании). Для того чтобы эта парадигма работала, необходимо чтобы
+    имя класса и путь к нему соответствовали следующему шаблону:
 
     .. code-block:: text
 
@@ -506,18 +508,20 @@ Symfony необходимо знать о вашем приложении. Ва
         Path:
             src/Acme/HelloBundle/Controller/HelloController.php
 
-    Typically, the only time you'll need to worry about the ``app/autoload.php``
-    file is when you're including a new third-party library in the ``vendor/``
-    directory. For more information on autoloading, see
-    :doc:`How to autoload Classes</cookbook/tools/autoloader>`.
+    Обычно, единственное время когда вам надо беспокоиться о файле
+    ``app/autoload.php``, это когда вы подключаете новую библиотеку
+    сторонних разработчиков в папке ``vendor/``. Для более подробной
+    информации о автозагрузке смотрите
+    :doc:`Как автозагружать классы</cookbook/tools/autoloader>`.
 
 Директория исходных кодов проекта (``src``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Put simply, the ``src/`` directory contains all of the actual code (PHP code,
-templates, configuration files, stylesheets, etc) that drives *your* application.
-When developing, the vast majority of your work will be done inside one or
-more bundles that you create in this directory.
+Если вкратце, директория ``src/`` содержит весь код приложения. Фактически, во 
+время разработки, большую часть работ вы будете производить именно в этой 
+директории. По умолчанию, директория ``src/`` нового проекта пуста. Когда вы 
+начинаете разработку, вы постепенно наполняете ее пакетами, которые содержат 
+код приложения.
 
 Но что же собственно из себя представляет сам :term:`пакет`?
 
@@ -539,16 +543,14 @@ more bundles that you create in this directory.
    Здесь мы рассмотрим лишь основы, более детальную информацию по пакетам вы
    можете найти в главе :doc:`пакеты</cookbook/bundles/best_practices>`.
 
-A bundle is simply a structured set of files within a directory that implement
-a single feature. You might create a ``BlogBundle``, a ``ForumBundle`` or
-a bundle for user management (many of these exist already as open source
-bundles). Each directory contains everything related to that feature, including
-PHP files, templates, stylesheets, JavaScripts, tests and anything else.
-Every aspect of a feature exists in a bundle and every feature lives in a
-bundle.
+Пакет - это структурированная коллекция файлов внутри директории, которые
+выполняют одну функцию. Вы можете создать ``BlogBundle``, ``ForumBundle``
+или пакет для управления пользователями (множество пакетов уже существует).
+Каждая папка содержит все, что относится к функции, включая PHP-файлы,
+шаблоны, стили, JavaScript-ы, тесты и все остальное.
 
-An application is made up of bundles as defined in the ``registerBundles()``
-method of the ``AppKernel`` class::
+Приложение подключает пакеты, указанные в методе ``registerBundles()``
+класса ``AppKernel``::
 
     // app/AppKernel.php
     public function registerBundles()
@@ -575,31 +577,31 @@ method of the ``AppKernel`` class::
         return $bundles;
     }
 
-With the ``registerBundles()`` method, you have total control over which bundles
-are used by your application (including the core Symfony bundles).
+С методом ``registerBundles()`` у вас есть полный контроль над пакетами, используемыми
+приложением (включая пакеты Symfony).
 
 .. tip::
 
-   A bundle can live *anywhere* as long as it can be autoloaded (via the
-   autoloader configured at ``app/autoload.php``).
+   Пакет может находиться *везде*, пока он может быть загружен (через автозагрузчик
+   настроенный в ``app/autoload.php``).
 
 Создание пакета
 ~~~~~~~~~~~~~~~~~
 
-The Symfony Standard Edition comes with a handy task that creates a fully-functional
-bundle for you. Of course, creating a bundle by hand is pretty easy as well.
+Symfony Standard Edition предоставляет удобную команду для создания полно-функционального
+пакета. Конечно, вы можете просто создать пакет вручную.
 
 Чтобы показать вам как проста система пакетов, давайте создадим новый пакет, назовём его
-``AcmeTestBundle``и активируем его.
+``AcmeTestBundle`` и активируем его.
 
 .. tip::
 
-    The ``Acme`` portion is just a dummy name that should be replaced by
-    some "vendor" name that represents you or your organization (e.g. ``ABCTestBundle``
-    for some company named ``ABC``).
+    Часть ``Acme`` это выдуманное имя организации и должно быть заменено именем,
+    которое представляет вас или вашу организацию (например ``ABCTestBundle``
+    для компании с названием ``ABC``).
 
-Start by creating a ``src/Acme/TestBundle/`` directory and adding a new file
-called ``AcmeTestBundle.php``::
+Начните с создания директории ``src/Acme/TestBundle/`` и добавления файла
+``AcmeTestBundle.php``::
 
     // src/Acme/TestBundle/AcmeTestBundle.php
     namespace Acme\TestBundle;
@@ -613,8 +615,8 @@ called ``AcmeTestBundle.php``::
 .. tip::
 
    Наименование ``AcmeTestBundle`` следует :ref:`соглашениям по именованию пакетов<bundles-naming-conventions>`.
-   You could also choose to shorten the name of the bundle to simply ``TestBundle``
-   by naming this class ``TestBundle`` (and naming the file ``TestBundle.php``).
+   Вы так же можете сократить имя пакеты до простого ``TestBundle``, назвав
+   класс ``TestBundle`` (и назвав файл ``TestBundle.php``).
 
 Этот пустой класс – единственное, что необходимо создать для минимальной 
 комплектации пакета. Не смотря на то, что класс пуст, он обладает большим 
@@ -651,8 +653,8 @@ Symfony также предлагает интерфейс для командн
 .. tip::
 
    Когда создаёте новый пакет, или используете сторонние пакеты, убедитесь, 
-   что пакет активирован в ``registerBundles()``. When using
-   the ``generate:bundle`` command, this is done for you.
+   что пакет активирован в ``registerBundles()``. При использовании команды 
+   ``generate:bundle`` все уже сделано за вас.
 
 Структура директории пакета
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -919,10 +921,9 @@ Symfony также предлагает интерфейс для командн
 увеличения порога логгирования и прочих настроек, специфичных для разработки.
 
 Оба окружения – ``prod`` и ``test`` следуют той же модели: каждое окружение
-импортирует базовые настройки и модифицирует их значения для своих нужд. This
-is just a convention,
-but one that allows you to reuse most of your configuration and customize
-just pieces of it between environments.
+импортирует базовые настройки и модифицирует их значения для своих нужд.
+Это просто соглашение, которое позволяет пере-использовать настройки и менять
+только части в зависимости от окружения.
 
 Заключение
 ------------
