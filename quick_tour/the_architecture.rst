@@ -1,23 +1,19 @@
 Архитектура
 ===========
 
-You are my hero! Who would have thought that you would still be here after the
-first three parts? Your efforts will be well rewarded soon. The first three
-parts didn't look too deeply at the architecture of the framework. Because it
-makes Symfony2 stand apart from the framework crowd, let's dive into the
-architecture now.
+Вы мой герой! Кто бы мог подумать, что вы все еще будете здесь после первых трех частей? Ваши усилия скоро будут вознаграждены. В первых частях мы глубоко не рассматривали архитектуру фреймворка. Поскольку это одна из отличительных особенностей Symfony, давайте-ка остановимся на этом подробнее.
 
 Структура папок
 ---------------
 
-The directory structure of a Symfony2 :term:`application` is rather flexible,
+Структура директорий :term:`приложения<приложение>` очень гибкая,
 but the directory structure of the *Standard Edition* distribution reflects
 the typical and recommended structure of a Symfony2 application:
 
-* ``app/``:    The application configuration;
-* ``src/``:    The project's PHP code;
+* ``app/``:    Эта папка содержит конфигурацию приложения;
+* ``src/``:    Весь PHP код хранится здесь;
 * ``vendor/``: The third-party dependencies;
-* ``web/``:    The web root directory.
+* ``web/``:    Эта папка должна быть корневой web директорией.
 
 Каталог ``web/``
 ~~~~~~~~~~~~~~~~
@@ -103,7 +99,7 @@ your server or locally in your projects.
 ---------------
 
 Этот раздел кратко поведает вам об одной из существеннейших и наиболее мощных
-особенностей Symfony2, о системе бандлов :term:`bundle`.
+особенностей Symfony2, о системе :term:`пакетов<пакет>`.
 
 Бандл в некотором роде как плагин в других программах. Почему его назвали
 *бандл*, а не *плагин*? Потому что *всё что угодно* в Symfony2 это бандл, от

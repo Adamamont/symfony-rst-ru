@@ -1,52 +1,50 @@
 .. index::
-   single: Logging
+   single: Журналирование
 
-How to use Monolog to write Logs
-================================
+Как использовать Monolog для журналирования
+===========================================
+Библиотека Monolog_ предназначена для ведения журналов в PHP 5.3 
+и используется Symfony2. Её прототипом послужила библиотека LogBook
+в Python.
 
-Monolog_ is a logging library for PHP 5.3 used by Symfony2. It is
-inspired by the Python LogBook library.
-
-Usage
------
-
-In Monolog each logger defines a logging channel. Each channel has a
-stack of handlers to write the logs (the handlers can be shared).
+Использование
+--------------
+В Монологе, каждый элемент журналирования(логгер) определяет свой 
+канал журналирования(logger). Каждый канал имеет стек обработчиков 
+которые пишут журнал (лог) (причем обработчики могут быть общими).
 
 .. tip::
+    При установке логгера в сервис, можно использовать :ref:`свой канал<dic_tags-monolog>`
+    и легко просматривать какая часть приложения оставила сообщение в журнале.
 
-    When injecting the logger in a service you can
-    :ref:`use a custom channel<dic_tags-monolog>` to see easily which
-    part of the application logged the message.
+Простейшим обработчиком является ``StreamHandler``, который пишет журнал
+в поток (по-умолчанию в ``app/logs/prod.log`` в production среде и
+``app/logs/dev.log`` в среде разработки).
 
-The basic handler is the ``StreamHandler`` which writes logs in a stream
-(by default in the ``app/logs/prod.log`` in the prod environment and
-``app/logs/dev.log`` in the dev environment).
+В состав Monolog также входит мощный обработчик, предназначенный для журналирования
+в production среде: ``FingersCrossedHandler``. Он позволяет хранить сообщения в буфере
+и записывать их в журнал только при условии того, что оно доходит до уровня контроллера 
+(ERROR в конфигурации стандартной редакции)  перенаправляя их к другому обработчику.
 
-Monolog comes also with a powerful built-in handler for the logging in
-prod environment: ``FingersCrossedHandler``. It allows you to store the
-messages in a buffer and to log them only if a message reaches the
-action level (ERROR in the configuration provided in the standard
-edition) by forwarding the messages to another handler.
-
-To log a message simply get the logger service from the container in
-your controller::
+Чтобы записать сообщение в журнал, просто получите доступ к сервису логгера
+из контейнера в вашем контроллере::
 
     $logger = $this->get('logger');
-    $logger->info('We just got the logger');
-    $logger->err('An error occurred');
+    $logger->info('We just go the logger');
+    $logger->err('An error occured');
 
 .. tip::
+    Использование методов интерфейса 
+    :class:`Symfony\Component\HttpKernel\Log\LoggerInterface`
+    позволит изменять реализацию логгера без внесения 
+    изменений в ваш код.
+    
+Использование нескольких обработчиков
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Using only the methods of the
-    :class:`Symfony\\Component\\HttpKernel\\Log\\LoggerInterface` interface
-    allows to change the logger implementation without changing your code.
-
-Using several handlers
-~~~~~~~~~~~~~~~~~~~~~~
-
-The logger uses a stack of handlers which are called successively. This
-allows you to log the messages in several ways easily.
+Логер использует стек обработчиков которые вызываются последовательно.
+Данная особенность позволяет легко записывать сообщения в журнал 
+различными способами.
 
 .. configuration-block::
 
@@ -95,29 +93,27 @@ allows you to log the messages in several ways easily.
             </monolog:config>
         </container>
 
-The above configuration defines a stack of handlers which will be called
-in the order where they are defined.
+Конфигурация выше, определяет стек обработчиков которые будут вызваны в порядке
+в котором они объявлены.
 
 .. tip::
-
-    The handler named "file" will not be included in the stack itself as
-    it is used as a nested handler of the fingerscrossed handler.
+    Обработчик "file" не будет включен в стек, так как он сам используется в 
+    качестве вложенного обработчика в production среде.
 
 .. note::
+    Если у вас появиться желание изменить настройки MonologBundle в другом
+    файле настроек, то необходимо будет полностью переопределить весь стек.
+    Он не может быть объединен с текущими настройками, т.к. в результате 
+    объединения настроек невозможно управлять порядком вызова обработчиков.
+    
 
-    If you want to change the config of MonologBundle in another config
-    file you need to redefine the whole stack. It cannot be merged
-    because the order matters and a merge does not allow to control the
-    order.
+Изменение форматирования
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-Changing the formatter
-~~~~~~~~~~~~~~~~~~~~~~
-
-The handler uses a ``Formatter`` to format the record before logging
-it. All Monolog handlers use an instance of
-``Monolog\Formatter\LineFormatter`` by default but you can replace it
-easily. Your formatter must implement
-``Monolog\Formatter\FormatterInterface``.
+Обработчик использует ``Formatter`` для форматирования записей, перед записью их в журнал.
+Все обработчики Monolog по-умолчанию используют экземпляр ``Monolog\Formatter\LineFormatter``,
+но его легко заменить своим собственным. Ваш собственный форматировщик должен использовать интерфейс
+``Monolog\Formatter\LineFormatterInterface``.
 
 .. configuration-block::
 
@@ -154,84 +150,62 @@ easily. Your formatter must implement
             </monolog:config>
         </container>
 
-Adding some extra data in the log messages
-------------------------------------------
 
-Monolog allows to process the record before logging it to add some
-extra data. A processor can be applied for the whole handler stack or
-only for a specific handler.
+Дополнительная информация в сообщениях журнала
+----------------------------------------------
 
-A processor is simply a callable receiving the record as it's first argument.
+Monolog позволяет добавлять дополнительные данные в сообщения 
+перед их записью в журнал. Процессор может быть применен как ко всему стеку 
+так и к какому-либо определенному обработчику из его состава.
 
-Processors are configured using the ``monolog.processor`` DIC tag. See the
-:ref:`reference about it<dic_tags-monolog-processor>`.
-
-Adding a Session/Request Token
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Sometimes it is hard to tell which entries in the log belong to which session
-and/or request. The following example will add a unique token for each request
-using a processor.
-
-.. code-block:: php
-
-    namespace Acme\MyBundle;
-
-    use Symfony\Component\HttpFoundation\Session;
-
-    class SessionRequestProcessor
-    {
-        private $session;
-        private $token;
-
-        public function __construct(Session $session)
-        {
-            $this->session = $session;
-        }
-
-        public function processRecord(array $record)
-        {
-            if (null === $this->token) {
-                try {
-                    $this->token = substr($this->session->getId(), 0, 8);
-                } catch (\RuntimeException $e) {
-                    $this->token = '????????';
-                }
-                $this->token .= '-' . substr(uniqid(), -8);
-            }
-            $record['extra']['token'] = $this->token;
-
-            return $record;
-        }
-    }
+Процессор - это сервис получающий запись в качестве первого аргумента и
+логгер или обработчик в качестве второго, в зависимости от того на каком уровне
+он вызывается.
 
 .. configuration-block::
 
     .. code-block:: yaml
 
         services:
-            monolog.formatter.session_request:
-                class: Monolog\Formatter\LineFormatter
-                arguments:
-                    - "[%%datetime%%] [%%extra.token%%] %%channel%%.%%level_name%%: %%message%%\n"
-
-            monolog.processor.session_request:
-                class: Acme\MyBundle\SessionRequestProcessor
-                arguments:  [ @session ]
-                tags:
-                    - { name: monolog.processor, method: processRecord }
-
+            my_processor:
+                class: Monolog\Processor\WebProcessor
         monolog:
             handlers:
-                main:
+                file:
                     type: stream
-                    path: %kernel.logs_dir%/%kernel.environment%.log
                     level: debug
-                    formatter: monolog.formatter.session_request
+                    processors:
+                        - Acme\MyBundle\MyProcessor::process
+            processors:
+                - @my_processor
 
-.. note::
+    .. code-block:: xml
 
-    If you use several handlers, you can also register the processor at the
-    handler level instead of globally.
+        <container xmlns="http://symfony.com/schema/dic/services"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:monolog="http://symfony.com/schema/dic/monolog"
+            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
+                                http://symfony.com/schema/dic/monolog http://symfony.com/schema/dic/monolog/monolog-1.0.xsd">
+
+            <services>
+                <service id="my_processor" class="Monolog\Processor\WebProcessor" />
+            </services>
+            <monolog:config>
+                <monolog:handler
+                    name="file"
+                    type="stream"
+                    level="debug"
+                    formatter="my_formatter"
+                >
+                    <monolog:processor callback="Acme\MyBundle\MyProcessor::process" />
+                </monolog:handler />
+                <monolog:processor callback="@my_processor" />
+            </monolog:config>
+        </container>
+
+.. tip::
+    Если вашему процессору требуются зависимости, то можно объявить
+    сервис и реализовать метод ``__invoke`` в классе, с тем чтобы сделать
+    его вызываемым. После изменений процессор можно добавить в стек.
 
 .. _Monolog: https://github.com/Seldaek/monolog

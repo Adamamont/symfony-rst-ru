@@ -1,5 +1,5 @@
-How Symfony2 differs from symfony1
-==================================
+Symfony2 для пользователей symfony 1
+====================================
 
 The Symfony2 framework embodies a significant evolution when compared with
 the first version of the framework. Fortunately, with the MVC architecture
@@ -214,8 +214,8 @@ directory, e.g. ``my_app/``, with the same basic setup as the ``app/`` directory
 
 .. tip::
 
-    Read the definition of a :term:`Project`, an :term:`Application`, and a
-    :term:`Bundle` in the glossary.
+    Прочтите определения :term:`проект` и :term:`приложение`, а также
+    :term:`пакет` в словаре.
 
 Bundles and Plugins
 -------------------
