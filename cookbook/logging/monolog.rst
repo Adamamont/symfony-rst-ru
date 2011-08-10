@@ -30,8 +30,8 @@
 из контейнера в вашем контроллере::
 
     $logger = $this->get('logger');
-    $logger->info('We just go the logger');
-    $logger->err('An error occured');
+    $logger->info('We just got the logger');
+    $logger->err('An error occurred');
 
 .. tip::
     Использование методов интерфейса 
@@ -113,7 +113,7 @@
 Обработчик использует ``Formatter`` для форматирования записей, перед записью их в журнал.
 Все обработчики Monolog по-умолчанию используют экземпляр ``Monolog\Formatter\LineFormatter``,
 но его легко заменить своим собственным. Ваш собственный форматировщик должен использовать интерфейс
-``Monolog\Formatter\LineFormatterInterface``.
+``Monolog\Formatter\FormatterInterface``.
 
 .. configuration-block::
 
@@ -158,54 +158,77 @@ Monolog позволяет добавлять дополнительные да�
 перед их записью в журнал. Процессор может быть применен как ко всему стеку 
 так и к какому-либо определенному обработчику из его состава.
 
-Процессор - это сервис получающий запись в качестве первого аргумента и
-логгер или обработчик в качестве второго, в зависимости от того на каком уровне
-он вызывается.
+Процессор - это сервис получающий запись в качестве первого аргумента.
+
+Processors are configured using the ``monolog.processor`` DIC tag. See the
+:ref:`reference about it<dic_tags-monolog-processor>`.
+
+Adding a Session/Request Token
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Sometimes it is hard to tell which entries in the log belong to which session
+and/or request. The following example will add a unique token for each request
+using a processor.
+
+.. code-block:: php
+
+    namespace Acme\MyBundle;
+
+    use Symfony\Component\HttpFoundation\Session;
+
+    class SessionRequestProcessor
+    {
+        private $session;
+        private $token;
+
+        public function __construct(Session $session)
+        {
+            $this->session = $session;
+        }
+
+        public function processRecord(array $record)
+        {
+            if (null === $this->token) {
+                try {
+                    $this->token = substr($this->session->getId(), 0, 8);
+                } catch (\RuntimeException $e) {
+                    $this->token = '????????';
+                }
+                $this->token .= '-' . substr(uniqid(), -8);
+            }
+            $record['extra']['token'] = $this->token;
+
+            return $record;
+        }
+    }
 
 .. configuration-block::
 
     .. code-block:: yaml
 
         services:
-            my_processor:
-                class: Monolog\Processor\WebProcessor
+            monolog.formatter.session_request:
+                class: Monolog\Formatter\LineFormatter
+                arguments:
+                    - "[%%datetime%%] [%%extra.token%%] %%channel%%.%%level_name%%: %%message%%\n"
+
+            monolog.processor.session_request:
+                class: Acme\MyBundle\SessionRequestProcessor
+                arguments:  [ @session ]
+                tags:
+                    - { name: monolog.processor, method: processRecord }
+
         monolog:
             handlers:
-                file:
+                main:
                     type: stream
+                    path: %kernel.logs_dir%/%kernel.environment%.log
                     level: debug
-                    processors:
-                        - Acme\MyBundle\MyProcessor::process
-            processors:
-                - @my_processor
+                    formatter: monolog.formatter.session_request
 
-    .. code-block:: xml
+.. note::
 
-        <container xmlns="http://symfony.com/schema/dic/services"
-            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xmlns:monolog="http://symfony.com/schema/dic/monolog"
-            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
-                                http://symfony.com/schema/dic/monolog http://symfony.com/schema/dic/monolog/monolog-1.0.xsd">
-
-            <services>
-                <service id="my_processor" class="Monolog\Processor\WebProcessor" />
-            </services>
-            <monolog:config>
-                <monolog:handler
-                    name="file"
-                    type="stream"
-                    level="debug"
-                    formatter="my_formatter"
-                >
-                    <monolog:processor callback="Acme\MyBundle\MyProcessor::process" />
-                </monolog:handler />
-                <monolog:processor callback="@my_processor" />
-            </monolog:config>
-        </container>
-
-.. tip::
-    Если вашему процессору требуются зависимости, то можно объявить
-    сервис и реализовать метод ``__invoke`` в классе, с тем чтобы сделать
-    его вызываемым. После изменений процессор можно добавить в стек.
+    If you use several handlers, you can also register the processor at the
+    handler level instead of globally.
 
 .. _Monolog: https://github.com/Seldaek/monolog
