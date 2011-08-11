@@ -33,7 +33,7 @@
 
     cookbook/index
 
-Прочитайте :doc:`Рецепты </cookbook/index>`.
+.. include:: /cookbook/map.rst.inc
 
 Справочные документы
 --------------------
