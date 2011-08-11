@@ -133,6 +133,21 @@ Symfony2 ``WebTestCase``. Стандартное издание поставля
     это XML или HTML документ. Для других типов нужно получать содержимое Response
     через ``$client->getResponse()->getContent()``.
 
+    You can set the content-type of the request to JSON by adding 'HTTP_CONTENT_TYPE' => 'application/json'.
+
+.. tip::
+
+    The full signature of the ``request()`` method is::
+
+        request($method,
+            $uri, 
+            array $parameters = array(), 
+            array $files = array(), 
+            array $server = array(), 
+            $content = null, 
+            $changeHistory = true
+        )   
+
 Чтобы кликнуть по ссылке, сначала выберите её с помощью Crawler, используя
 выражение XPath или CSS селектор, затем кликните по ней с помощью Client::
 
