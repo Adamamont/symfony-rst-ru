@@ -1,27 +1,27 @@
 .. index::
-   single: Validation
+   single: Валидация
 
-Validation
-==========
+Валидация
+=========
 
-Validation is a very common task in web applications. Data entered in forms
-needs to be validated. Data also needs to be validated before it is written
-into a database or passed to a web service.
+Валидация очень частая задача в веб приложениях. Данные введеные в форму 
+должны быть валидированы. Данные также должны пройти валидацию перед 
+записью в базу данных или передачи в web-службу.
 
-Symfony2 ships with a `Validator`_ component that makes this task easy and transparent.
-This component is based on the `JSR303 Bean Validation specification`_. What?
-A Java specification in PHP? You heard right, but it's not as bad as it sounds.
-Let's look at how it can be used in PHP.
+Symfony2 поставляется с компонентом `Validator`_, который выполняет эту задачу легко и прозрачно.
+Этот компонент основан на спецификации `JSR303 Bean Validation specification`_. Что?
+Спецификация Java в PHP? Вы не ослышались, но это не так плохо, как кажется.
+Давайте посмотрим, как это можно использовать в PHP.
 
 .. index:
-   single: Validation; The basics
+   single: Валидация; Основы
 
-The Basics of Validation
-------------------------
+Основы валидации
+----------------
 
-The best way to understand validation is to see it in action. To start, suppose
-you've created a plain-old-PHP object that you need to use somewhere in
-your application:
+Лучший способ понять валидацию - это увидеть ее в действии. Для начала 
+предположим, что вы создали старый-добрый PHP объект, который необходимо 
+использовать где-нибудь в вашем приложении:
 
 .. code-block:: php
 
@@ -33,15 +33,15 @@ your application:
         public $name;
     }
 
-So far, this is just an ordinary class that serves some purpose inside your
-application. The goal of validation is to tell you whether or not the data
-of an object is valid. For this to work, you'll configure a list of rules
-(called :ref:`constraints<validation-constraints>`) that the object must
-follow in order to be valid. These rules can be specified via a number of
-different formats (YAML, XML, annotations, or PHP).
+Пока это всего лишь обычный класс, созданный с какой-то целью. Цель 
+валидации в том, чтобы сообщить вам, являются ли данные объекта валидными 
+или же нет. Чтобы это заработало, вы должны сконфигурировать список 
+правил (называемых :ref:`ограничениями<validation-constraints>` 
+(constraints)) которым должен следовать объект, что бы быть валидным. Эти 
+правила могут быть определены с помощью различных форматов (YML, XML, 
+аннотации или PHP).
 
-For example, to guarantee that the ``$name`` property is not empty, add the
-following:
+Чтобы гарантировать, что свойство ``$name`` не пустое, добавьте следующее:
 
 .. configuration-block::
 
@@ -100,21 +100,20 @@ following:
 
 .. tip::
 
-    Protected and private properties can also be validated, as well as "getter"
-    methods (see `validator-constraint-targets`).
+    Protected и private свойства также могут быть валидированы, как
+    геттеры (см. `Цели ограничений`_).
 
 .. index::
-   single: Validation; Using the validator
+   single: Валидация; Использование validator
 
-Using the ``validator`` Service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Использование ``validator`` Service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Next, to actually validate an ``Author`` object, use the ``validate`` method
-on the ``validator`` service (class :class:`Symfony\\Component\\Validator\\Validator`).
-The job of the ``validator`` is easy: to read the constraints (i.e. rules)
-of a class and verify whether or not the data on the object satisfies those
-constraints. If validation fails, an array of errors is returned. Take this
-simple example from inside a controller:
+Чтобы на самом деле проверить объект ``Author`` используется метод  ``validate`` в сервисе ``validator`` (класс :class:`Symfony\\Component\\Validator\\Validator`).
+Работа ``validator`` iпроста: прочесть ограничения (т.е. правила)
+класса и проверить удовлетвореют ли данные этим правилам или нет. Если 
+валадация не пройдена, возвращается массив ошибок. Рассмотрим этот 
+простой пример контроллера:
 
 .. code-block:: php
 
@@ -137,16 +136,14 @@ simple example from inside a controller:
         }
     }
 
-If the ``$name`` property is empty, you will see the following error
-message:
+Если свойство ``$name`` пусто, вы увидите следующее сообщение об ошибке:
 
 .. code-block:: text
 
     Acme\BlogBundle\Author.name:
         This value should not be blank
 
-If you insert a value into the ``name`` property, the happy success message
-will appear.
+Если в это свойство ``name`` вставить значение, то вернется сообщение об успехе.
 
 .. tip::
 
@@ -167,7 +164,7 @@ You could also pass the collection of errors into a template.
         // ...
     }
 
-Inside the template, you can output the list of errors exactly as needed:
+В шаблоне вы можете вывести ошибки так, как хотите:
 
 .. configuration-block::
 
@@ -195,23 +192,19 @@ Inside the template, you can output the list of errors exactly as needed:
 
 .. note::
 
-    Each validation error (called a "constraint violation"), is represented by
-    a :class:`Symfony\\Component\\Validator\\ConstraintViolation` object.
+    Каждая ошибка валидации (называющаяся "нарушение ограничения" ("constraint violation")), представлена объектом :class:`Symfony\\Component\\Validator\\ConstraintViolation`.
 
 .. index::
-   single: Validation; Validation with forms
+   single: Валидация; Валидация и формы
 
 .. _book-validation-forms:
 
-Validation and Forms
-~~~~~~~~~~~~~~~~~~~~
+Валидация и формы
+~~~~~~~~~~~~~~~~~
 
-The ``validator`` service can be used at any time to validate any object.
-In reality, however, you'll usually work with the ``validator`` indirectly
-when working with forms. Symfony's form library uses the ``validator`` service
-internally to validate the underlying object after values have been submitted
-and bound. The constraint violations on the object are converted into ``FieldError``
-objects that can easily be displayed with your form. The typical form submission
+Сервис ``validator`` может быть использован в любое время для проверки любого объекта.
+Однако в действительности, вы обычно будете работать с ``validator`` при
+работе с формами. Бибилиотека Symfony для работы с формами ``validator`` использует сервис валидации внутренне для проверки объекта после того, как данные были отправлены и связаны. Нарушения ограничений объекта преобразуются в объекты ``FieldError``, которые затем могут отображаться с вашей формой. The typical form submission
 workflow looks like the following from inside a controller::
 
     use Acme\BlogBundle\Entity\Author;
@@ -243,14 +236,14 @@ workflow looks like the following from inside a controller::
 
     This example uses an ``AuthorType`` form class, which is not shown here.
 
-For more information, see the :doc:`Forms</book/forms>` chapter.
+Для большей информации, смотрите главу :doc:`Forms</book/forms>`.
 
 .. index::
-   pair: Validation; Configuration
+   pair: Валидация; Настройка
 
 .. _book-validation-configuration:
 
-Configuration
+Конфигурация
 -------------
 
 The Symfony2 validator is enabled by default, but you must explicitly enable
@@ -279,36 +272,37 @@ annotations if you're using the annotation method to specify your constraints:
         )));
 
 .. index::
-   single: Validation; Constraints
+   single: Валидация; Ограничения
 
 .. _validation-constraints:
 
-Constraints
+Ограничения
 -----------
 
-The ``validator`` is designed to validate objects against *constraints* (i.e.
-rules). In order to validate an object, simply map one or more constraints
-to its class and then pass it to the ``validator`` service.
+``validator`` разработан для проверки объектов на соответствия 
+*ограничениям* (т.е. правилам). Для валидации объекта, просто представьте 
+одно или более ограничений в своем классе, а затем передайте их сервису ``validator``.
 
-Behind the scenes, a constraint is simply a PHP object that makes an assertive
-statement. In real life, a constraint could be: "The cake must not be burned".
-In Symfony2, constraints are similar: they are assertions that a condition
-is true. Given a value, a constraint will tell you whether or not that value
-adheres to the rules of the constraint.
+Ограничение это просто PHP объект, которое представляется в виде жесткого 
+заявления. В реальной жизни, ограничение может быть представлено в виде: 
+"Пирог не должен быть подгорелым". В Symfony2 ограничения похожи: они 
+являются утверждениями, что условие истинно. Получив значение, 
+ограничение сообщает сообщит вам, придерживается ли значение правилам 
+ограничений.
 
-Supported Constraints
-~~~~~~~~~~~~~~~~~~~~~
+Поддерживаемые ограничения
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Symfony2 packages a large number of the most commonly-needed constraints.
-The full list of constraints with details is available in the
-:doc:`constraints reference section</reference/constraints>`.
+Пакеты Symfony2 содержат большое число наиболее часто необходимых ограничений.
+Полный список ограничений с различными деталями доступен в
+:doc:`справочном разделе ограничений</reference/constraints>`.
 
 .. index::
-   single: Validation; Constraints configuration
+   single: Валидация; Конфигурация ограничений
 
 .. _book-validation-constraint-configuration:
 
-Constraint Configuration
+Конфигурация ограничений
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 Some constraints, like :doc:`NotBlank</reference/constraints/NotBlank>`,
@@ -457,23 +451,24 @@ for the constraint or play it safe by always passing in an array of options
 
 .. _validator-constraint-targets:
 
-Constraint Targets
-------------------
+Цели ограничений
+-----------------
 
-Constraints can be applied to a class property (e.g. ``name``) or a public
-getter method (e.g. ``getFullName``). The first is the most common and easy
+Ограничения могут быть применены к свойству класса (например ``name``) 
+или к открытому геттер-методу (например ``getFullName``). The first is 
+the most common and easy
 to use, but the second allows you to specify more complex validation rules.
 
 .. index::
    single: Validation; Property constraints
 
-Properties
-~~~~~~~~~~
+Свойства
+~~~~~~~~~
 
-Validating class properties is the most basic validation technique. Symfony2
-allows you to validate private, protected or public properties. The next
-listing shows you how to configure the ``$firstName`` property of an ``Author``
-class to have at least 3 characters.
+Проверка свойств класса является самой основной техникой валидации. 
+Symfony2 позволяет вам проверять private, protected или public свойства. 
+Следующий листинг показывает вам, как конфигурировать свойства ``$firstName`` класса ``Author``
+чтобы иметь по крайней-мере 3 символа.
 
 .. configuration-block::
 
@@ -531,16 +526,17 @@ class to have at least 3 characters.
 .. index::
    single: Validation; Getter constraints
 
-Getters
+Геттеры
 ~~~~~~~
 
-Constraints can also be applied to the return value of a method. Symfony2
-allows you to add a constraint to any public method whose name starts with
-"get" or "is". In this guide, both of these types of methods are referred
-to as "getters".
+Ограничение также может применено для возвращения значения метода. 
+Symfony2 позволяет вам добавлять ограничение public методам, котрые 
+начинаются с "get" или "is". В этом руководстве, оба этих методов 
+называются "геттерами".
 
-The benefit of this technique is that it allows you to validate your object
-dynamically. For example, suppose you want to make sure that a password field
+Преимущество этой техники в том, что она позоволяет вам проверить ваш 
+объект динамически. For example, suppose you want to make sure that a 
+password field
 doesn't match the first name of the user (for security reasons). You can
 do this by creating an ``isPasswordLegal`` method, and then asserting that
 this method must return ``true``:
@@ -607,10 +603,10 @@ Now, create the ``isPasswordLegal()`` method, and include the logic you need::
 
 .. note::
 
-    The keen-eyed among you will have noticed that the prefix of the getter
-    ("get" or "is") is omitted in the mapping. This allows you to move the
-    constraint to a property with the same name later (or vice versa) without
-    changing your validation logic.
+    Внимательные из вас заметят, что префикс геттера ("get" или "is")      
+    опущен в отображении (mapping). Это позволяет вам перемещать 
+    ограничение свойства с тем же именем позже (или наоборот) без 
+    изменения логики валидации.
 
 .. _book-validation-validation-groups:
 
@@ -744,18 +740,19 @@ Of course, you'll usually work with validation indirectly through the form
 library. For information on how to use validation groups inside forms, see
 :ref:`book-forms-validation-groups`.
 
-Final Thoughts
---------------
+Заключительные мысли
+--------------------
 
-The Symfony2 ``validator`` is a powerful tool that can be leveraged to
-guarantee that the data of any object is "valid". The power behind validation
-lies in "constraints", which are rules that you can apply to properties or
-getter methods of your object. And while you'll most commonly use the validation
-framework indirectly when using forms, remember that it can be used anywhere
-to validate any object.
+В Symfony2 ``validator`` мощный инструмент, который может быть 
+использован для гарантирования, что данные любого объекта валидны. Мощь 
+валидации заключается в "ограничениях", представляющие собой правила, 
+которые вы можете применить к свойствам или геттер-методам вашего 
+объекта. И пока вы будете использовать фреймворк валидации вместе с 
+формами, помните, что он может быть использован в любом месте для 
+проверки любого объекта.
 
-Learn more from the Cookbook
-----------------------------
+Узнайте больше из книги рецептов
+--------------------------------
 
 * :doc:`/cookbook/validation/custom_constraint`
 
