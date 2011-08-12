@@ -1,17 +1,17 @@
 .. index::
    single: Emails
 
-How to send an Email
+Как отправлять письма
 ====================
 
-Sending emails is a classic task for any web application and one that has
-special complications and potential pitfalls. Instead of recreating the wheel,
-one solution to send emails is to use the ``SwiftmailerBundle``, which leverages
-the power of the `Swiftmailer`_ library.
+Отправка писем является классической задачей для любого веб-приложения которая 
+несёт особые осложнения и подводные камни. Вместо того чтобы создавать колесо,
+одним из решений для рассылки писем является использование ``SwiftmailerBundle``,
+который использует всю силу `Swiftmailer`_ библиотеки.
 
 .. note::
 
-    Don't forget to enable the bundle in your kernel before using it::
+    Не забудьте включить пакет в вашем ядре перед его использованием::
 
         public function registerBundles()
         {
@@ -25,11 +25,11 @@ the power of the `Swiftmailer`_ library.
 
 .. _swift-mailer-configuration:
 
-Configuration
+Конфигурация
 -------------
 
-Before using Swiftmailer, be sure to include its configuration. The only
-mandatory configuration parameter is ``transport``:
+Перед использованием Swiftmailer, не забудьте сконфигурировать его.
+Единственный обязательный параметр - ``transport``:
 
 .. configuration-block::
 
@@ -73,10 +73,10 @@ mandatory configuration parameter is ``transport``:
             'password'   => "your_password",
         ));
 
-The majority of the Swiftmailer configuration deals with how the messages
-themselves should be delivered.
+Большинство Swiftmailer конфигураций относится к тому, как сообщения
+будут доставляться.
 
-The following configuration attributes are available:
+Доступны следующие атрибуты конфигурации:
 
 * ``transport``         (``smtp``, ``mail``, ``sendmail``, or ``gmail``)
 * ``username``
@@ -87,18 +87,17 @@ The following configuration attributes are available:
 * ``auth_mode``         (``plain``, ``login``, or ``cram-md5``)
 * ``spool``
 
-  * ``type`` (how to queue the messages, only ``file`` is supported currently)
-  * ``path`` (where to store the messages)
-* ``delivery_address``  (an email address where to send ALL emails)
-* ``disable_delivery``  (set to true to disable delivery completely)
+  * ``type`` (как сохранять сообщения, только ``file`` поддерживается в настоящее время)
+  * ``path`` (где сохраняють сообщения)
+* ``delivery_address``  (почтовый адрес куда отправлять ВСЕ письма)
+* ``disable_delivery``  (установите true для отключения доставки писем полностью)
 
-Sending Emails
+Отправка писем
 --------------
 
-The Swiftmailer library works by creating, configuring and then sending
-``Swift_Message`` objects. The "mailer" is responsible for the actual delivery
-of the message and is accessible via the ``mailer`` service. Overall, sending
-an email is pretty straightforward::
+Библиотека Swiftmailer работает путём создания, настройки, а затем отправки 
+``Swift_Message`` объектов. "Почтовик" отвечает за фактическую отправку сообщений
+и доступен через службу ``mailer``. В целом, отправка писем достаточно проста::
 
     public function indexAction($name)
     {
@@ -113,17 +112,16 @@ an email is pretty straightforward::
         return $this->render(...);
     }
 
-To keep things decoupled, the email body has been stored in a template and
-rendered with the ``renderView()`` method.
+Чтобы не усложнять, тело письма было сохранено в шаблоне и отрисовано методом 
+`` RenderView ()``.
 
-The ``$message`` object supports many more options, such as including attachments,
-adding HTML content, and much more. Fortunately, Swiftmailer covers the topic
-of `Creating Messages`_ in great detail in its documentation.
+Объект `$message`` поддерживает многие другие параметры, например, прикрепление 
+вложений, добавление HTML контента, и многое другое. К счастью, Swiftmailer 
+охватывает тему `Создания сообщений`_ очень подробно в своей документации.
 
 .. tip::
 
-    Several other cookbook articles are available related to sending emails
-    in Symfony2:
+    Доступно несколько других рецептов, связанных с отправкой писем в Symfony2:  
 
     * :doc:`gmail`
     * :doc:`email/dev_environment`
