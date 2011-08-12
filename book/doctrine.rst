@@ -1,50 +1,49 @@
 .. index::
    single: Doctrine
 
-Databases and Doctrine ("The Model")
-====================================
+Базы данных и Doctrine ("Модели")
+=================================
 
-Let's face it, one of the most common and challenging tasks for any application
-involves persisting and reading information to and from a database. Fortunately,
-Symfony comes integrated with `Doctrine`_, a library whose sole goal is to
-give you powerful tools to make this easy. In this chapter, you'll learn the
-basic philosophy behind Doctrine and see how easy working with a database can
-be.
+Давайте посмотрим правде в глаза, одна из самых распространенных и 
+сложных задач для любого приложения - это сохранение и чтение информации 
+из базы данных. К счастью, Symfony поставляется с интегрированной 
+`Doctrine`_, библиотекой, главная цель которой - дать вам мощный 
+инструмент, делающей эту задачу простой. В этой главе вы узнаете базовую 
+философию Doctrine и увидите на сколько простой может быть работа с 
+базой данных.
 
 .. note::
 
-    Doctrine is totally decoupled from Symfony and using it is optional.
-    This chapter is all about the Doctrine ORM, which aims to let you map
-    objects to a relational database (such as *MySQL*, *PostgreSQL* or *Microsoft SQL*).
-    If you prefer to use raw database queries, this is easy, and explained
-    in the ":doc:`/cookbook/doctrine/dbal`" cookbook entry.
+    Doctrine является полностью отдельным инструментов и ее    
+    использование не обязательно. В этой главе все о Doctrine ORM, 
+    которая оперирует объектами для работы с реляционными базами данных 
+    (таких как *MySQL*, *PostgreSQL* или *Microsoft SQL*). Если вы 
+    предпочитаете обычные запросы, то это просто и раскрыто в статье ":doc:`/cookbook/doctrine/dbal`" книги рецептов.
 
-    You can also persist data to `MongoDB`_ using Doctrine ODM library. For
-    more information, read the ":doc:`/cookbook/doctrine/mongodb`" cookbook
-    entry.
+    Вы так же можете сохранять информацию в `MongoDB`_ используя 
+    библиотеку Doctrine ODM. Для большей информации читайте главу ":doc:`/cookbook/doctrine/mongodb`" книги рецептов.
 
-A Simple Example: A Product
----------------------------
+Простой пример: Продукт
+-----------------------
 
-The easiest way to understand how Doctrine works is to see it in action.
-In this section, you'll configure your database, create a ``Product`` object,
-persist it to the database and fetch it back out.
+Простейший путь для понимания того, как работает Doctrine - это увидеть 
+все на примере. В этой части вы настроите базу данных, создадите объект 
+``Product``, сохраните его в базе данных и загрузите его обратно.
 
-.. sidebar:: Code along with the example
+.. sidebar:: Программирование вместе с примером
 
-    If you want to follow along with the example in this chapter, create
-    an ``AcmeStoreBundle`` via:
+    Если вы хотите следовать за примером в главе создайте ``AcmeStoreBundle``:
     
     .. code-block:: bash
     
         php app/console generate:bundle --namespace=Acme/StoreBundle
 
-Configuring the Database
-~~~~~~~~~~~~~~~~~~~~~~~~
+Настройка базы
+~~~~~~~~~~~~~~
 
-Before you really begin, you'll need to configure your database connection
-information. By convention, this information is usually configured in an
-``app/config/parameters.ini`` file:
+Прежде чем начать вам нужно настроить соединение с базой данных. По 
+соглашению эта информация обычно настраивается в файле
+``app/config/parameters.ini``:
 
 .. code-block:: ini
 
@@ -58,9 +57,9 @@ information. By convention, this information is usually configured in an
 
 .. note::
 
-    Defining the configuration via ``parameters.ini`` is just a convention.
-    The parameters defined in that file are referenced by the main configuration
-    file when setting up Doctrine:
+    Задание настроек через файл ``parameters.ini`` всего лишь 
+    соглашение. Параметры, заданные в этом файле, передаются в главную 
+    конфигурацию при настройке Doctrine:
     
     .. code-block:: yaml
     
@@ -72,26 +71,25 @@ information. By convention, this information is usually configured in an
                 user:     %database_user%
                 password: %database_password%
     
-    By separating the database information into a separate file, you can
-    easily keep different version of the file on each server. You can also
-    easily store database configuration (or any sensitive information) outside
-    of your project, like inside your Apache configuration, for example. For
-    more information, see :doc:`/cookbook/configuration/external_parameters`.
+    При помощи разделения настроек на разные файлы, вы можете просто 
+    держать разные версии файлов на каждом сервере. Вы так же можете 
+    держать конфигурацию базы данных (или любую важную информацию) за 
+    пределами вашего проекта, например, внутри настроек Apache. Для 
+    большей информации смотрите :doc:`/cookbook/configuration/external_parameters`.
 
-Now that Doctrine knows about your database, you can have it create the database
-for you:
+Теперь Doctrine знает о вашей базе данных, вы можете создать базу командой:
 
 .. code-block:: bash
 
     php app/console doctrine:database:create
 
-Creating an Entity Class
-~~~~~~~~~~~~~~~~~~~~~~~~
+Создание класса сущности (entity)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Suppose you're building an application where products need to be displayed.
-Without even thinking about Doctrine or databases, you already know that
-you need a ``Product`` object to represent those products. Create this class
-inside the ``Entity`` directory of your ``AcmeStoreBundle``::
+Представим, что вы создаете приложение, где нужно отобразить продукты. 
+Даже не думая о Doctrine или базах данных вы уже знаете, что вам нужен 
+объект ``Product`` для представления данных. Создайте этот класс внутри 
+директории ``Entity`` внутри вашего ``AcmeStoreBundle``::
 
     // src/Acme/StoreBundle/Entity/Product.php    
     namespace Acme\StoreBundle\Entity;
@@ -105,15 +103,14 @@ inside the ``Entity`` directory of your ``AcmeStoreBundle``::
         protected $description;
     }
 
-The class - often called an "entity", meaning *a basic class that holds data* -
-is simple and helps fulfill the business requirement of needing products
-in your application. This class can't be persisted to a database yet - it's
-just a simple PHP class.
+Этот класс - часто называемый "сущностью", имея ввиду *базовый класс, 
+который содержит данные* - простой и помогает выполнять бизнес-правила 
+вашего приложения. Этот класс не может сохранять информацию в базу - это 
+простой PHP-класс.
 
 .. tip::
 
-    Once you learn the concepts behind Doctrine, you can have Doctrine create
-    this entity class for you:
+    Когда вы узнали как работает Doctrine, вы можете заставить Doctrine создать класс сущности за вас:
     
     .. code-block:: bash
         
@@ -124,23 +121,19 @@ just a simple PHP class.
 
 .. _book-doctrine-adding-mapping:
 
-Add Mapping Information
-~~~~~~~~~~~~~~~~~~~~~~~
+Связование информации
+~~~~~~~~~~~~~~~~~~~~~
 
-Doctrine allows you to work with databases in a much more interesting way
-than just fetching rows of column-based table into an array. Instead, Doctrine
-allows you to persist entire *objects* to the database and fetch entire objects
-out of the database. This works by mapping a PHP class to a database table,
-and the properties of that PHP class to columns on the table:
+Doctrine позволяет работать с базами более интересным способом, чем 
+запрос строк таблицы в массив. Вместо этого, Doctrine позволяет 
+сохранять сами *объекты* в базу и запрашивать объекты обратно. Это 
+работает при помощи связывания PHP-класса с таблиец БД и свойств этого 
+класса со столбцами таблицы:
 
 .. image:: /images/book/doctrine_image_1.png
    :align: center
 
-For Doctrine to be able to do this, you just have to create "metadata", or
-configuration that tells Doctrine exactly how the ``Product`` class and its
-properties should be *mapped* to the database. This metadata can be specified
-in a number of different formats including YAML, XML or directly inside the
-``Product`` class via annotations:
+Чтобы сделать это с Doctrine, вы должны создать "метаданные" или конфигурацию, которая скажет Doctrine как класс ``Product`` и его свойства *связаны* с базой данных. Эти методанные могут быть описаны в нескольких форматах, включая YAML, XML или прямо внутри класса ``Product`` через аннотации:
 
 .. note::
 
@@ -226,8 +219,7 @@ in a number of different formats including YAML, XML or directly inside the
 
 .. tip::
 
-    The table name is optional and if omitted, will be determined automatically
-    based on the name of the entity class.
+    Настрока "table" не обязательна и может быть опущена, тогда название таблицы будет определенно на основе названия класса..
 
 Doctrine allows you to choose from a wide variety of different field types,
 each with their own options. For information on the available field types,
