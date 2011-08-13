@@ -401,12 +401,11 @@ an ``UPDATE`` query if the record already exists in the database.
     data into your project (i.e. "fixture data"). For information, see
     :doc:`/cookbook/doctrine/doctrine_fixtures`.
 
-Fetching Objects from the Database
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Извлечение объектов из базы
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Fetching an object back out of the database is even easier. For example,
-suppose you've configured a route to display a specific ``Product`` based
-on its ``id`` value::
+Извлечь объект из базы очень просто. Для примера, вы настроили маршрут
+для отображения отдельного ``Product`` в зависимости от его значения ``id``::
 
     public function showAction($id)
     {
