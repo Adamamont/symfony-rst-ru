@@ -78,17 +78,17 @@
 
 Доступны следующие атрибуты конфигурации:
 
-* ``transport``         (``smtp``, ``mail``, ``sendmail``, or ``gmail``)
+* ``transport``         (``smtp``, ``mail``, ``sendmail``, или ``gmail``)
 * ``username``
 * ``password``
 * ``host``
 * ``port``
-* ``encryption``        (``tls``, or ``ssl``)
-* ``auth_mode``         (``plain``, ``login``, or ``cram-md5``)
+* ``encryption``        (``tls``, или ``ssl``)
+* ``auth_mode``         (``plain``, ``login``, или ``cram-md5``)
 * ``spool``
 
   * ``type`` (как сохранять сообщения, только ``file`` поддерживается в настоящее время)
-  * ``path`` (где сохраняють сообщения)
+  * ``path`` (где сохранять сообщения)
 * ``delivery_address``  (почтовый адрес куда отправлять ВСЕ письма)
 * ``disable_delivery``  (установите true для отключения доставки писем полностью)
 
