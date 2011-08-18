@@ -53,6 +53,19 @@ Symfony2 поставляется с компонентом `Validator`_, кот
                 name:
                     - NotBlank: ~
 
+    .. code-block:: php-annotations
+
+        // src/Acme/BlogBundle/Entity/Author.php
+        use Symfony\Component\Validator\Constraints as Assert;
+
+        class Author
+        {
+            /**
+             * @Assert\NotBlank()
+             */
+            public $name;
+        }
+
     .. code-block:: xml
 
         <!-- src/Acme/BlogBundle/Resources/config/validation.xml -->
@@ -67,19 +80,6 @@ Symfony2 поставляется с компонентом `Validator`_, кот
                 </property>
             </class>
         </constraint-mapping>
-
-    .. code-block:: php-annotations
-
-        // src/Acme/BlogBundle/Entity/Author.php
-        use Symfony\Component\Validator\Constraints as Assert;
-
-        class Author
-        {
-            /**
-             * @Assert\NotBlank()
-             */
-            public $name;
-        }
 
     .. code-block:: php
 
@@ -321,6 +321,22 @@ constraint, have several configuration options available. Suppose that the
                 gender:
                     - Choice: { choices: [male, female], message: Choose a valid gender. }
 
+    .. code-block:: php-annotations
+
+        // src/Acme/BlogBundle/Entity/Author.php
+        use Symfony\Component\Validator\Constraints as Assert;
+
+        class Author
+        {
+            /**
+             * @Assert\Choice(
+             *     choices = { "male", "female" },
+             *     message = "Choose a valid gender."
+             * )
+             */
+            public $gender;
+        }
+
     .. code-block:: xml
 
         <!-- src/Acme/BlogBundle/Resources/config/validation.xml -->
@@ -342,22 +358,6 @@ constraint, have several configuration options available. Suppose that the
             </class>
         </constraint-mapping>
 
-    .. code-block:: php-annotations
-
-        // src/Acme/BlogBundle/Entity/Author.php
-        use Symfony\Component\Validator\Constraints as Assert;
-
-        class Author
-        {
-            /**
-             * @Assert\Choice(
-             *     choices = { "male", "female" },
-             *     message = "Choose a valid gender."
-             * )
-             */
-            public $gender;
-        }
-
     .. code-block:: php
 
         // src/Acme/BlogBundle/Entity/Author.php
@@ -377,6 +377,8 @@ constraint, have several configuration options available. Suppose that the
             }
         }
 
+.. _validation-default-option:
+
 The options of a constraint can always be passed in as an array. Some constraints,
 however, also allow you to pass the value of one, "*default*", option in place
 of the array. In the case of the ``Choice`` constraint, the ``choices``
@@ -391,6 +393,19 @@ options can be specified in this way.
             properties:
                 gender:
                     - Choice: [male, female]
+
+    .. code-block:: php-annotations
+
+        // src/Acme/BlogBundle/Entity/Author.php
+        use Symfony\Component\Validator\Constraints as Assert;
+
+        class Author
+        {
+            /**
+             * @Assert\Choice({"male", "female"})
+             */
+            protected $gender;
+        }
 
     .. code-block:: xml
 
@@ -409,19 +424,6 @@ options can be specified in this way.
                 </property>
             </class>
         </constraint-mapping>
-
-    .. code-block:: php-annotations
-
-        // src/Acme/BlogBundle/Entity/Author.php
-        use Symfony\Component\Validator\Constraints as Assert;
-
-        class Author
-        {
-            /**
-             * @Assert\Choice({"male", "female"})
-             */
-            protected $gender;
-        }
 
     .. code-block:: php
 
@@ -462,6 +464,8 @@ to use, but the second allows you to specify more complex validation rules.
 .. index::
    single: Validation; Property constraints
 
+.. _validation-property-target:
+
 Свойства
 ~~~~~~~~~
 
@@ -481,16 +485,6 @@ Symfony2 позволяет вам проверять private, protected или 
                     - NotBlank: ~
                     - MinLength: 3
 
-    .. code-block:: xml
-
-        <!-- src/Acme/BlogBundle/Resources/config/validation.xml -->
-        <class name="Acme\BlogBundle\Entity\Author">
-            <property name="firstName">
-                <constraint name="NotBlank" />
-                <constraint name="MinLength">3</constraint>
-            </property>
-        </class>
-
     .. code-block:: php-annotations
 
         // Acme/BlogBundle/Entity/Author.php
@@ -504,6 +498,16 @@ Symfony2 позволяет вам проверять private, protected или 
              */
             private $firstName;
         }
+
+    .. code-block:: xml
+
+        <!-- src/Acme/BlogBundle/Resources/config/validation.xml -->
+        <class name="Acme\BlogBundle\Entity\Author">
+            <property name="firstName">
+                <constraint name="NotBlank" />
+                <constraint name="MinLength">3</constraint>
+            </property>
+        </class>
 
     .. code-block:: php
 
@@ -549,18 +553,7 @@ this method must return ``true``:
         Acme\BlogBundle\Entity\Author:
             getters:
                 passwordLegal:
-                    - True: { message: "The password cannot match your first name" }
-
-    .. code-block:: xml
-
-        <!-- src/Acme/BlogBundle/Resources/config/validation.xml -->
-        <class name="Acme\BlogBundle\Entity\Author">
-            <getter property="passwordLegal">
-                <constraint name="True">
-                    <option name="message">The password cannot match your first name</option>
-                </constraint>
-            </getter>
-        </class>
+                    - "True": { message: "The password cannot match your first name" }
 
     .. code-block:: php-annotations
 
@@ -577,6 +570,17 @@ this method must return ``true``:
                 // return true or false
             }
         }
+
+    .. code-block:: xml
+
+        <!-- src/Acme/BlogBundle/Resources/config/validation.xml -->
+        <class name="Acme\BlogBundle\Entity\Author">
+            <getter property="passwordLegal">
+                <constraint name="True">
+                    <option name="message">The password cannot match your first name</option>
+                </constraint>
+            </getter>
+        </class>
 
     .. code-block:: php
 
@@ -608,6 +612,17 @@ Now, create the ``isPasswordLegal()`` method, and include the logic you need::
     ограничение свойства с тем же именем позже (или наоборот) без 
     изменения логики валидации.
 
+.. _validation-class-target:
+
+Classes
+~~~~~~~
+
+Some constraints apply to the entire class being validated. For example,
+the :doc:`Callback</reference/constraints/Callback>` constraint is a generic
+constraint that's applied to the class itself. When that class is validated,
+methods specified by that constraint are simply executed so that each can
+provide more custom validation.
+
 .. _book-validation-validation-groups:
 
 Validation Groups
@@ -638,6 +653,33 @@ user registers and when a user updates his/her contact information later:
                 city:
                     - MinLength: 2
 
+    .. code-block:: php-annotations
+
+        // src/Acme/BlogBundle/Entity/User.php
+        namespace Acme\BlogBundle\Entity;
+
+        use Symfony\Component\Security\Core\User\UserInterface
+        use Symfony\Component\Validator\Constraints as Assert;
+
+        class User implements UserInterface
+        {
+            /**
+            * @Assert\Email(groups={"registration"})
+            */
+            private $email;
+
+            /**
+            * @Assert\NotBlank(groups={"registration"})
+            * @Assert\MinLength(limit=7, groups={"registration"})
+            */
+            private $password;
+
+            /**
+            * @Assert\MinLength(2)
+            */
+            private $city;
+        }
+
     .. code-block:: xml
 
         <!-- src/Acme/BlogBundle/Resources/config/validation.xml -->
@@ -666,33 +708,6 @@ user registers and when a user updates his/her contact information later:
                 <constraint name="MinLength">7</constraint>
             </property>
         </class>
-
-    .. code-block:: php-annotations
-
-        // src/Acme/BlogBundle/Entity/User.php
-        namespace Acme\BlogBundle\Entity;
-
-        use Symfony\Component\Security\Core\User\UserInterface
-        use Symfony\Component\Validator\Constraints as Assert;
-
-        class User implements UserInterface
-        {
-            /**
-            * @Assert\Email(groups={"registration"})
-            */
-            private $email;
-
-            /**
-            * @Assert\NotBlank(groups={"registration"})
-            * @Assert\MinLength(limit=7, groups={"registration"})
-            */
-            private $password;
-
-            /**
-            * @Assert\MinLength(2)
-            */
-            private $city;
-        }
 
     .. code-block:: php
 
