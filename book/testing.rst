@@ -122,7 +122,7 @@ Symfony2 ``WebTestCase``. Стандартное издание поставля
 
 Метод ``createClient()`` возвращает клиента, привязанного к текущему приложению::
 
-    $crawler = $client->request('GET', 'hello/Fabien');
+    $crawler = $client->request('GET', '/demo/hello/Fabien');
 
 Метод ``request()`` возвращает объект ``Crawler``, используемый для выбора
 элементов в Response, для кликов по ссылкам и отправке форм.
